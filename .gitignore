@@ -1,0 +1,49 @@
+# Binaries
+/ucat
+/dist/
+
+# Go
+*.test
+*.out
+/coverage.html
+/coverage.txt
+
+# Environment and secrets
+.env
+.env.*
+*.token
+
+# ucat sandbox targets in the repository root (local only; examples and testdata keep theirs)
+/targets/local*.yml
+/targets/sandbox*.yml
+/targets/dev*.yml
+
+# Local test projects
+/test_*/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# LLM tooling (local only)
+/.claude/
+/graphify-out/
+
+# Live UC test scripts and their logs (local only; the folder itself stays in the repository through .gitkeep)
+/test-scripts/live/*
+!/test-scripts/live/.gitkeep
+
+# quickstart example: the real targets (host, warehouse, catalog) stay local; the .example files are committed
+/examples/quickstart/targets/*.yml
+
+# Internal planning and design documents (local only)
+/internal-docs/
+
+# Local backup of the pre-release git history (never published)
+/backups/
