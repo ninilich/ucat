@@ -61,12 +61,22 @@ More: [Getting started](docs/getting-started.md), [the quickstart example](examp
 
 ## Install
 
-Not released yet. The first release will ship binaries for Linux, macOS and Windows on GitHub Releases. For now, from
-source (Go 1.26 or newer):
+With Homebrew (macOS and Linux):
+
+```bash
+brew install ninilich/ucat/ucat
+```
+
+Or download the binary for Linux, macOS (amd64, arm64) or Windows (amd64) from
+[GitHub Releases](https://github.com/ninilich/ucat/releases). Every release has a `checksums.txt` signed with cosign.
+
+Or build it from source (Go 1.26 or newer):
 
 ```bash
 go install github.com/ninilich/ucat@latest
 ```
+
+Check it with `ucat version`.
 
 ## Documentation
 
