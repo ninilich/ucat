@@ -1,0 +1,27 @@
+== ucat validate
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: failed to parse: did not find expected ',' or ']' (tables/silver/syntax.yml:1)
+| error: field "bogus" is not supported; if the file was written for a newer ucat, upgrade ucat (tables/silver/unknown_field.yml:3)
+| Error: failed to load tables
+== ucat validate -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: failed to parse: did not find expected ',' or ']' (tables/silver/syntax.yml:1)
+| error: field "bogus" is not supported; if the file was written for a newer ucat, upgrade ucat (tables/silver/unknown_field.yml:3)
+| Error: failed to load tables
+== ucat plan -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: failed to parse: did not find expected ',' or ']' (tables/silver/syntax.yml:1)
+| error: field "bogus" is not supported; if the file was written for a newer ucat, upgrade ucat (tables/silver/unknown_field.yml:3)
+| Error: failed to load tables

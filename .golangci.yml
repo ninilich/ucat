@@ -1,0 +1,39 @@
+version: "2"
+
+run:
+  tests: true
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - staticcheck
+    - unused
+    - govet
+    - ineffassign
+    - revive
+    - gocyclo
+    - gocognit
+    - goconst
+  settings:
+    govet:
+      enable:
+        - shadow
+    staticcheck:
+      checks: ["all"]
+    gocyclo:
+      min-complexity: 15
+    gocognit:
+      min-complexity: 20
+    goconst:
+      min-len: 3
+      min-occurrences: 3
+
+formatters:
+  enable:
+    - gofmt
+
+issues:
+  # Do not truncate reports: the target is zero findings, every one must be visible.
+  max-issues-per-linter: 0
+  max-same-issues: 0

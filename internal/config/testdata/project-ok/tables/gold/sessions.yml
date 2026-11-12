@@ -1,0 +1,10 @@
+name: sessions
+schema: gold
+
+columns:
+  - name: session_id
+    type: STRING
+    nullable: false
+  - name: user_id
+    type: BIGINT
+    nullable: false

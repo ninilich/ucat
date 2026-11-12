@@ -1,0 +1,19 @@
+-- stdin
+"proj\nmain\nsilver\nsilver\ndev,prod\nh\nok\nw\nh\na.b\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'dev': 
+| UC catalog name for target 'dev' [main_dev]: 
+| SQL warehouse ID for target 'dev' (from Databricks UI > SQL Warehouses, optional): 
+| Workspace host for 'prod': 
+| UC catalog name for target 'prod' [main_prod]: 
+-- stderr
+| Error: UC catalog name for target 'prod' "a.b" must not contain whitespace, dots, slashes or control characters and must be at most 255 characters
+-- files
+(none)

@@ -1,0 +1,27 @@
+== ucat validate
+-- exit code
+0
+-- stdout
+| ✓ all local checks passed
+-- stderr
+(empty)
+== ucat validate -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: logical schema "silver" is defined in both catalog "main" (catalogs/main.yml) and catalog "extra" (catalog:extra); a table references a schema by logical name only (schema:silver)
+| error: schemas "gold" (catalogs/main.yml) and "silver" (catalogs/main.yml) both resolve to physical schema Dev.silver; each logical schema must map to its own physical schema (schema:gold)
+| error: catalog "Dev" must be lowercase: Unity Catalog stores catalog names in lowercase (catalog:main)
+| Error: local validation failed
+== ucat plan -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: logical schema "silver" is defined in both catalog "main" (catalogs/main.yml) and catalog "extra" (catalog:extra); a table references a schema by logical name only (schema:silver)
+| error: schemas "gold" (catalogs/main.yml) and "silver" (catalogs/main.yml) both resolve to physical schema Dev.silver; each logical schema must map to its own physical schema (schema:gold)
+| error: catalog "Dev" must be lowercase: Unity Catalog stores catalog names in lowercase (catalog:main)
+| Error: local validation failed

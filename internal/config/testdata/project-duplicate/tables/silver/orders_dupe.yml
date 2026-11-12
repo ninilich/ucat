@@ -1,0 +1,6 @@
+name: orders
+schema: silver
+
+columns:
+  - name: id
+    type: BIGINT

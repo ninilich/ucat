@@ -1,0 +1,10 @@
+-- stdin
+70000 x 'a' + newline
+-- exit code
+1
+-- stdout
+| Project name: 
+-- stderr
+| Error: answer to "Project name" is too long (max 64 KiB)
+-- files
+(none)

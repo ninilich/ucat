@@ -1,0 +1,48 @@
+== ucat validate
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| warning: catalog name "" does not match filename "noname"; using name field (catalogs/noname.yml)
+| warning: catalog name "Main" does not match filename "other"; using name field (catalogs/other.yml)
+| error: catalog name is empty (catalogs/noname.yml)
+| error: logical schema "silver" is defined in both catalog "common" (catalogs/common.yml) and catalog "main" (catalogs/main.yml); a table references a schema by logical name only (schema:silver)
+| error: logical catalog names "Main" (catalogs/other.yml) and "main" (catalogs/main.yml) differ only in case (catalog:Main)
+| error: logical schema names "Gold" (catalogs/other.yml) and "gold" (catalogs/main.yml) differ only in case (schema:Gold)
+| error: schemas "p1" (catalogs/phys.yml) and "p2" (catalogs/phys.yml) both resolve to physical schema shared_cat.same; each logical schema must map to its own physical schema (schema:p1)
+| error: catalog "Prod" must be lowercase: Unity Catalog stores catalog names in lowercase (catalog:Main)
+| error: schema "Gold" must be lowercase: Unity Catalog stores schema names in lowercase (schema:Main.Gold)
+| Error: local validation failed
+== ucat validate -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| warning: catalog name "" does not match filename "noname"; using name field (catalogs/noname.yml)
+| warning: catalog name "Main" does not match filename "other"; using name field (catalogs/other.yml)
+| error: catalog name is empty (catalogs/noname.yml)
+| error: logical schema "silver" is defined in both catalog "common" (catalogs/common.yml) and catalog "main" (catalogs/main.yml); a table references a schema by logical name only (schema:silver)
+| error: logical catalog names "Main" (catalogs/other.yml) and "main" (catalogs/main.yml) differ only in case (catalog:Main)
+| error: logical schema names "Gold" (catalogs/other.yml) and "gold" (catalogs/main.yml) differ only in case (schema:Gold)
+| error: schemas "p1" (catalogs/phys.yml) and "p2" (catalogs/phys.yml) both resolve to physical schema shared_cat.same; each logical schema must map to its own physical schema (schema:p1)
+| error: catalog "Prod" must be lowercase: Unity Catalog stores catalog names in lowercase (catalog:Main)
+| error: schema "Gold" must be lowercase: Unity Catalog stores schema names in lowercase (schema:Main.Gold)
+| Error: local validation failed
+== ucat plan -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| warning: catalog name "" does not match filename "noname"; using name field (catalogs/noname.yml)
+| warning: catalog name "Main" does not match filename "other"; using name field (catalogs/other.yml)
+| error: catalog name is empty (catalogs/noname.yml)
+| error: logical schema "silver" is defined in both catalog "common" (catalogs/common.yml) and catalog "main" (catalogs/main.yml); a table references a schema by logical name only (schema:silver)
+| error: logical catalog names "Main" (catalogs/other.yml) and "main" (catalogs/main.yml) differ only in case (catalog:Main)
+| error: logical schema names "Gold" (catalogs/other.yml) and "gold" (catalogs/main.yml) differ only in case (schema:Gold)
+| error: schemas "p1" (catalogs/phys.yml) and "p2" (catalogs/phys.yml) both resolve to physical schema shared_cat.same; each logical schema must map to its own physical schema (schema:p1)
+| error: catalog "Prod" must be lowercase: Unity Catalog stores catalog names in lowercase (catalog:Main)
+| error: schema "Gold" must be lowercase: Unity Catalog stores schema names in lowercase (schema:Main.Gold)
+| Error: local validation failed

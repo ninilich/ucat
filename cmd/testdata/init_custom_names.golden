@@ -1,0 +1,16 @@
+-- stdin
+"my proj: x\nsales\nraw\nraw_uc\nstage\nhttps://stage.example.com\nSALES_UC\nwh-1\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [raw]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'stage': 
+| UC catalog name for target 'stage' [sales]: 
+-- stderr
+| Error: UC catalog name for target 'stage' "SALES_UC" must be lowercase
+-- files
+(none)

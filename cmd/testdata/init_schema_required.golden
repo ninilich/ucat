@@ -1,0 +1,12 @@
+-- stdin
+"proj\nmain\n\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+-- stderr
+| Error: logical schema name is required
+-- files
+(none)

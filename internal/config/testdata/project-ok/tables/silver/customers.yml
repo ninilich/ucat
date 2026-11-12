@@ -1,0 +1,10 @@
+name: customers
+schema: silver
+
+columns:
+  - name: id
+    type: BIGINT
+    nullable: false
+  - name: email
+    type: STRING
+    nullable: false

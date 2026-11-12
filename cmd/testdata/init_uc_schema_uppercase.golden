@@ -1,0 +1,13 @@
+-- stdin
+"proj\nmain\nsilver\nSilver\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+-- stderr
+| Error: UC schema name "Silver" must be lowercase
+-- files
+(none)

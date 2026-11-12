@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ucat - Databricks Unity Catalog tables, changed like code</title>
+  <meta name="description" content="Declarative management of Databricks Unity Catalog managed tables: YAML in git, plan, apply from CI, the same definitions through dev, test and prod. No state file.">
+  <script>document.documentElement.className = "js";</script>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ucat - Databricks Unity Catalog tables, changed like code">
+  <meta property="og:description" content="YAML in git, plan, apply from CI. Declarative management of Databricks Unity Catalog managed tables. No state file.">
+  <meta property="og:url" content="https://ninilich.github.io/ucat/">
+  <meta property="og:image" content="https://ninilich.github.io/ucat/assets/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ninilich.github.io/ucat/assets/social-preview.png">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sb-head">
+        <a class="brand" href="#overview"><img src="assets/ucat-icon-tile.svg" width="40" height="40" alt=""><span class="wm">u<span>cat</span></span></a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+      </div>
+      <nav id="menu" aria-label="Main">
+        <ul>
+          <li><a class="item" href="#overview">Overview</a></li>
+          <li><a class="item" href="#how-it-works">How it works</a></li>
+          <li><a class="item" href="#features">Features</a></li>
+          <li><a class="item" href="#compare">Compare</a></li>
+          <li><a class="item" href="#quickstart">Quickstart</a></li>
+          <li><a class="item" href="documentation.html">Documentation</a></li>
+        </ul>
+        <div class="sb-foot">
+          <ul>
+            <li><a class="item" href="https://github.com/ninilich/ucat"><svg class="sb-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+          </ul>
+          <p class="sb-legal"><span class="uc">u<span>cat</span></span> is an independent open-source tool for Databricks.<span>Apache 2.0</span></p>
+        </div>
+      </nav>
+    </aside>
+
+    <main id="main">
+      <section class="panel" id="overview" data-title="Overview">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">For Databricks Unity Catalog</p>
+            <h1 tabindex="-1">Unity Catalog tables, changed like code.</h1>
+            <p class="lead">A schema change should be a reviewed, versioned change applied by automation, not a hand edit or a <code>CREATE TABLE</code> buried in a notebook. <span class="uc">u<span>cat</span></span> keeps your Databricks managed table definitions in git as YAML, compares them with what is really in Unity Catalog, shows exactly what would change, and applies it from CI, the same way through dev, test and prod.</p>
+            <p class="tagline">Declare. Plan. Apply.</p>
+            <div class="actions">
+              <a class="btn primary" href="#quickstart">Get started</a>
+              <a class="btn secondary" href="documentation.html">Read the docs</a>
+            </div>
+          </div>
+          <img src="assets/cato-overview.svg" width="240" height="240" alt="Cato, the ucat mascot, says: No changes.">
+        </div>
+        <div class="demo">
+          <img src="assets/demo.gif" width="1180" height="720" alt="Terminal recording: ucat validate, plan and apply create a table; then a new column, a different clustering and a table property are added to it (changed lines highlighted), with validate, plan and apply; the last plan prints No changes.">
+        </div>
+
+        <div class="sub" id="why">
+          <h2>Sound familiar?</h2>
+          <ul>
+            <li>A column was added in production by hand. Dev and test never got it.</li>
+            <li>Your jobs are full of <code>CREATE TABLE IF NOT EXISTS</code>. A pipeline ends up doing what it should not: owning its own table definitions. Creation is smeared across the code. It is an anti-pattern and a workaround for a missing tool.</li>
+            <li>Nobody can review a table change before it reaches production.</li>
+            <li>A rename quietly became a drop and a create.</li>
+          </ul>
+          <p><strong>The missing piece next to Declarative Automation Bundles (formerly Databricks Asset Bundles).</strong> Bundles deploy jobs and pipelines; <span class="uc">u<span>cat</span></span> deploys tables the same way. Describe them declaratively, review the plan in a pull request, apply the same definitions to dev, test and prod, one target at a time.</p>
+        </div>
+        <p class="legal"><span class="oss">Open source under the Apache License 2.0. <a href="https://github.com/ninilich/ucat/issues">Issues</a>, <a href="https://github.com/ninilich/ucat/blob/main/CONTRIBUTING.md">contributions welcome</a>, <a href="https://github.com/ninilich/ucat/blob/main/ROADMAP.md">roadmap</a>.</span>Databricks and Unity Catalog are trademarks of Databricks, Inc. <span class="uc">u<span>cat</span></span> is an independent project and is not sponsored or endorsed by Databricks.</p>
+      </section>
+
+      <section class="panel" id="how-it-works" data-title="How it works">
+        <div class="head-mascot">
+          <div><h2 tabindex="-1">How it works</h2></div>
+          <img src="assets/cato-plan.svg" width="160" height="160" alt="Cato reading a plan">
+        </div>
+        <ol class="steps">
+          <li>
+            <h3>Describe tables in YAML</h3>
+            Describe the table you want. One file per table, kept in git next to your code.
+            <pre><code>name: orders
+schema: silver
+comment: "Customer orders"
+columns:
+  - name: id
+    type: BIGINT
+    nullable: false
+    comment: "Primary key"
+  - name: created_at
+    type: TIMESTAMP
+clustering:
+  columns: [id]</code></pre>
+          </li>
+          <li>
+            <h3>Plan</h3>
+            <span class="uc">u<span>cat</span></span> reads the live state from the Unity Catalog REST API and shows exactly what would change. There is no state file to store or lock.
+            <pre><code>$ ucat plan -t dev
+  `main`.`silver`.`orders`
+    + create table `main`.`silver`.`orders` (2 columns)
+
+Plan: 1 to add, 0 to change, 0 to destroy.</code></pre>
+          </li>
+          <li>
+            <h3>Apply</h3>
+            Review, then apply. Destructive changes ask for confirmation; CI uses <code>--auto-approve</code>.
+            <pre><code>ucat apply -t dev</code></pre>
+          </li>
+          <li>
+            <h3>Change it later</h3>
+            Edit the YAML: add a column, change the clustering, set a table property. Run <code>plan</code> and <code>apply</code> again; <span class="uc">u<span>cat</span></span> changes the table in place.
+            <pre><code>  - name: discount
+    type: DECIMAL(5,2)
+clustering:
+  columns: [customer_id]
+tblproperties:
+  delta.enableChangeDataFeed: "true"</code></pre>
+            <pre><code>$ ucat plan -t dev
+  `main`.`silver`.`orders`
+    ~ set 1 tblproperties
+    ~ add column "discount" DECIMAL(5,2)
+    ~ set clustering by (customer_id)
+
+Plan: 0 to add, 3 to change, 0 to destroy.</code></pre>
+          </li>
+        </ol>
+      </section>
+
+      <section class="panel" id="features" data-title="Features">
+        <h2 tabindex="-1">Key features</h2>
+        <p class="lead">Schema changes get the same treatment as code: versioned, reviewed, applied by automation.</p>
+        <div class="feat-rows">
+          <div class="feat">
+            <div class="feat-text">
+              <h3>Describe it, don&#x27;t script it</h3>
+              <p>You write the table you want. <span class="uc">u<span>cat</span></span> works out the <code>CREATE</code> and <code>ALTER</code> statements, in the right order. No migrations to hand-write.</p>
+            </div>
+            <pre><code>columns:
+  - name: id
+    type: BIGINT
+  - name: discount
+    type: DECIMAL(5,2)
+clustering:
+  columns: [customer_id]</code></pre>
+          </div>
+          <div class="feat">
+            <div class="feat-text">
+              <h3>Reviewed before it runs</h3>
+              <p><code>ucat plan</code> shows exactly what would change, with <code>--show-sql</code> for the statements. Put it in a pull request.</p>
+            </div>
+            <pre><code>$ ucat plan -t dev
+  `main`.`shop`.`orders`
+    ~ set 1 tblproperties
+    ~ add column "discount" DECIMAL(5,2)
+    ~ set clustering by (customer_id)
+
+Plan: 0 to add, 3 to change, 0 to destroy.</code></pre>
+          </div>
+          <div class="feat">
+            <div class="feat-text">
+              <h3>Safe by default</h3>
+              <p>A rename stays a rename (<code>rename_from</code>), never a drop and a create. A column drop without column mapping is refused at planning time.</p>
+            </div>
+            <pre><code>rename_from: order_items
+
+$ ucat plan -t dev
+  `main`.`shop`.`order_lines`
+    ~ rename table order_items → order_lines
+
+Plan: 0 to add, 1 to change, 0 to destroy.</code></pre>
+          </div>
+        </div>
+        <div class="grid features">
+          <div class="card"><h3>Same definitions, every environment</h3><p>One YAML, a target per environment. CI applies the same definitions to dev, test and prod, one target at a time.</p></div>
+          <div class="card"><h3>Built for CI/CD</h3><p>Exit codes, <code>--detailed-exitcode</code>, <code>--json</code>. One binary for Linux, macOS and Windows.</p></div>
+          <div class="card"><h3>Start from what you have</h3><p><code>ucat pull</code> writes YAML from tables that already exist.</p></div>
+        </div>
+      </section>
+
+      <section class="panel" id="compare" data-title="Compare">
+        <h2 tabindex="-1">How it compares</h2>
+        <p class="lead"><span class="uc">u<span>cat</span></span> does one thing: it keeps the definitions of standalone managed tables in git and brings Unity Catalog to that state. The other tools do other jobs; several of them work well next to <span class="uc">u<span>cat</span></span>.</p>
+        <div class="tw">
+          <div class="tablewrap">
+            <table class="matrix">
+              <thead><tr><th scope="col" class="corner"><span class="sr">Criterion</span></th><th scope="col" class="c-ucat"><span class="hd"><span class="hn"><span class="uc">u<span>cat</span></span></span><button type="button" class="tip" aria-label="About ucat" aria-expanded="false" aria-controls="tip-1">i</button></span></th><th scope="col" class="c-tf"><span class="hd"><span class="hn">Terraform</span><button type="button" class="tip" aria-label="About Terraform" aria-expanded="false" aria-controls="tip-2">i</button></span></th><th scope="col" class="c-bl"><span class="hd"><span class="hn">Bundles + Lakeflow</span><button type="button" class="tip" aria-label="About Bundles + Lakeflow" aria-expanded="false" aria-controls="tip-3">i</button></span><span class="sub2">Declarative Automation Bundles and Lakeflow pipelines</span></th><th scope="col" class="c-dbt"><span class="hd"><span class="hn">dbt</span><button type="button" class="tip" aria-label="About dbt" aria-expanded="false" aria-controls="tip-4">i</button></span></th><th scope="col" class="c-atlas"><span class="hd"><span class="hn">Atlas</span><button type="button" class="tip" aria-label="About Atlas" aria-expanded="false" aria-controls="tip-5">i</button></span></th><th scope="col" class="c-nb"><span class="hd"><span class="hn">Notebooks</span><button type="button" class="tip" aria-label="About Notebooks" aria-expanded="false" aria-controls="tip-6">i</button></span><span class="sub2">CREATE TABLE IF NOT EXISTS</span></th></tr></thead>
+              <tbody>
+                <tr><th scope="row"><span class="hd"><span class="hn">Designed for</span><button type="button" class="tip" aria-label="About Designed for" aria-expanded="false" aria-controls="tip-7">i</button></span></th><td class="u" data-tool="ucat">Definitions of standalone managed tables</td><td data-tool="Terraform">Infrastructure as code, including tables, schemas, catalogs</td><td data-tool="Bundles + Lakeflow">Deploying and running pipelines and jobs; pipeline-owned materialized views and streaming tables</td><td data-tool="dbt">Data transformations; a table is the output of a model</td><td data-tool="Atlas">Database schema management, declarative or versioned</td><td data-tool="Notebooks">Running code; creating a table is a side job</td></tr>
+                <tr><th scope="row"><span class="hd"><span class="hn">How you describe a table</span><button type="button" class="tip" aria-label="About How you describe a table" aria-expanded="false" aria-controls="tip-8">i</button></span></th><td class="u" data-tool="ucat">Declarative YAML, one file per table</td><td data-tool="Terraform">Declarative HCL resource</td><td data-tool="Bundles + Lakeflow">Pipeline code (SQL or Python)</td><td data-tool="dbt">SQL model plus YAML properties</td><td data-tool="Atlas">SQL schema file</td><td data-tool="Notebooks">Notebook code (SQL or Python)</td></tr>
+                <tr><th scope="row"><span class="hd"><span class="hn">What you run</span><button type="button" class="tip" aria-label="About What you run" aria-expanded="false" aria-controls="tip-9">i</button></span></th><td class="u" data-tool="ucat">One binary</td><td data-tool="Terraform">Terraform CLI, provider, state file</td><td data-tool="Bundles + Lakeflow">Databricks CLI; a pipeline in the workspace</td><td data-tool="dbt">Python, dbt-databricks adapter</td><td data-tool="Atlas">Atlas CLI, <strong class="em">Atlas Pro</strong> account for Databricks</td><td data-tool="Notebooks">Nothing extra</td></tr>
+                <tr><th scope="row"><span class="hd"><span class="hn">Licence and cost</span><button type="button" class="tip" aria-label="About Licence and cost" aria-expanded="false" aria-controls="tip-10">i</button></span></th><td class="u" data-tool="ucat">Open source (Apache 2.0), free</td><td data-tool="Terraform">Provider: Apache 2.0. Terraform itself: Business Source License</td><td data-tool="Bundles + Lakeflow">Part of Databricks</td><td data-tool="dbt">dbt Core open source (Apache 2.0), free</td><td data-tool="Atlas">Databricks needs the <strong class="em">paid Pro plan</strong></td><td data-tool="Notebooks">Part of Databricks</td></tr>
+                <tr><th scope="row"><span class="hd"><span class="hn">Supports managed tables</span><button type="button" class="tip" aria-label="About Supports managed tables" aria-expanded="false" aria-controls="tip-11">i</button></span></th><td class="u mkc" data-tool="ucat"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Terraform"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Bundles + Lakeflow"><span class="mk mk-no" role="img" aria-label="No">○</span></td><td class="mkc" data-tool="dbt"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-12">◐</button></td><td class="mkc" data-tool="Atlas"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Notebooks"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-13">◐</button></td></tr>
+                <tr><th scope="row"><span class="hd"><span class="hn">Works out the change and applies it in place (ALTER)</span><button type="button" class="tip" aria-label="About Works out the change and applies it in place (ALTER)" aria-expanded="false" aria-controls="tip-14">i</button></span></th><td class="u mkc" data-tool="ucat"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Terraform"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-15">◐</button></td><td class="mkc" data-tool="Bundles + Lakeflow"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-16">◐</button></td><td class="mkc" data-tool="dbt"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-17">◐</button></td><td class="mkc" data-tool="Atlas"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Notebooks"><span class="mk mk-no" role="img" aria-label="No">○</span></td></tr>
+                <tr class="last"><th scope="row"><span class="hd"><span class="hn">Shows a plan before applying</span><button type="button" class="tip" aria-label="About Shows a plan before applying" aria-expanded="false" aria-controls="tip-18">i</button></span></th><td class="u mkc" data-tool="ucat"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Terraform"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-19">◐</button></td><td class="mkc" data-tool="Bundles + Lakeflow"><button type="button" class="mk mk-part mkbtn" aria-label="Partly" aria-expanded="false" aria-controls="tip-20">◐</button></td><td class="mkc" data-tool="dbt"><span class="mk mk-no" role="img" aria-label="No">○</span></td><td class="mkc" data-tool="Atlas"><span class="mk mk-yes" role="img" aria-label="Yes">●</span></td><td class="mkc" data-tool="Notebooks"><span class="mk mk-no" role="img" aria-label="No">○</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="legend"><span class="mk mk-yes" aria-hidden="true">●</span> yes <span class="mk mk-part" aria-hidden="true">◐</span> partly (see the note) <span class="mk mk-no" aria-hidden="true">○</span> no. Checked against the vendors&#x27; documentation and, for the Terraform provider, its source code (v1.142.0), on 12 November 2026.</p>
+        <div role="tooltip" class="tipbox" id="tip-1" hidden>A CLI that keeps the definitions of standalone Unity Catalog managed tables in git as YAML, compares them with the live state and applies the difference. No state file.</div>
+        <div role="tooltip" class="tipbox" id="tip-2" hidden>The Databricks provider manages tables with databricks_sql_table, next to catalogs and schemas. It needs a state file. It adds or drops columns, or renames, comments and changes the nullability of existing columns, in place; a change of a column type is rejected at plan time. Adding or dropping columns together with changing existing ones in one apply is rejected, and a rename is matched by the position of the column, not by its name. The provider docs still say a column change recreates the table; the code no longer does that for these changes.</div>
+        <div role="tooltip" class="tipbox" id="tip-3" hidden>Declarative Automation Bundles (formerly Databricks Asset Bundles) deploy pipelines, jobs and other resources, including catalogs, schemas and volumes, but not tables. The direct deployment engine keeps its own state file. Lakeflow pipelines (formerly Delta Live Tables) build materialized views and streaming tables. Such a table and its pipeline are one unit: a different kind of table from a standalone managed table, and a different approach altogether.</div>
+        <div role="tooltip" class="tipbox" id="tip-4" hidden>A transformation tool. A table is the output of a model, so its schema follows the model&#x27;s SQL. dbt manages only the tables it builds. Incremental models can add columns (on_schema_change); a table model is replaced on every run.</div>
+        <div role="tooltip" class="tipbox" id="tip-5" hidden>A schema management tool with a declarative mode and Databricks support. Databricks is available only on its Pro plan or during a trial. Schemas are described in SQL, not YAML.</div>
+        <div role="tooltip" class="tipbox" id="tip-6" hidden>The common baseline: a notebook or job runs CREATE TABLE IF NOT EXISTS. It never changes a table that already exists, so the code and the real table drift apart, and every change is a hand-written ALTER. A workaround for a missing tool, not a tool.</div>
+        <div role="tooltip" class="tipbox" id="tip-7" hidden>What the tool is mainly built to do.</div>
+        <div role="tooltip" class="tipbox" id="tip-8" hidden>The form of the definition. Declarative means you state what the table should look like; imperative means you list the statements to run.</div>
+        <div role="tooltip" class="tipbox" id="tip-9" hidden>What you have to install or operate besides Databricks itself.</div>
+        <div role="tooltip" class="tipbox" id="tip-10" hidden>Whether you can use the tool for this job freely, or it is billed through Databricks or a paid plan.</div>
+        <div role="tooltip" class="tipbox" id="tip-11" hidden>Plain managed Delta tables in Unity Catalog. Bundles and Lakeflow work with materialized views and streaming tables instead: a different kind of table, owned by a pipeline.</div>
+        <div role="tooltip" class="tipbox" id="tip-12" hidden>Only the tables it builds as models.</div>
+        <div role="tooltip" class="tipbox" id="tip-13" hidden>Creates a table once; never changes it.</div>
+        <div role="tooltip" class="tipbox" id="tip-14" hidden>The tool finds the difference and builds the ALTER statements, so you do not write migrations and the table is not recreated.</div>
+        <div role="tooltip" class="tipbox" id="tip-15" hidden>Adds or drops columns, or renames and comments existing ones, in place (not both in one apply); a column type change is rejected at plan time.</div>
+        <div role="tooltip" class="tipbox" id="tip-16" hidden>ALTER on a streaming table is in Beta; changes the pipeline cannot handle need a full refresh that reprocesses the data.</div>
+        <div role="tooltip" class="tipbox" id="tip-17" hidden>Incremental models can follow on_schema_change; table models are replaced on every run.</div>
+        <div role="tooltip" class="tipbox" id="tip-18" hidden>You see what would change before anything runs.</div>
+        <div role="tooltip" class="tipbox" id="tip-19" hidden>terraform plan shows changes to resource attributes, not the SQL the provider will run.</div>
+        <div role="tooltip" class="tipbox" id="tip-20" hidden>bundle plan previews changes to resources such as a pipeline, not to the columns of a table.</div>
+
+        <div class="cmp-blocks">
+          <h3>What <span class="uc">u<span>cat</span></span> adds on top</h3>
+          <p>Explicit renames with <code>rename_from</code>. Checks while planning, before any DDL runs: an unsupported column type change, a new <code>NOT NULL</code> column, a column drop on a table without column mapping. <code>ucat pull</code>, which writes YAML from tables that already exist.</p>
+          <h3>Use together</h3>
+          <ul>
+            <li><strong>Terraform</strong> manages catalogs, schemas and grants; <span class="uc">u<span>cat</span></span> manages the tables inside them.</li>
+            <li><strong>Bundles</strong> deploy your pipelines; <span class="uc">u<span>cat</span></span> manages the standalone tables around them, for example the tables your jobs load data into.</li>
+            <li><strong>dbt</strong> transforms downstream; <span class="uc">u<span>cat</span></span> keeps the definitions of the tables you load into.</li>
+          </ul>
+          <h3>When <span class="uc">u<span>cat</span></span> is not a fit</h3>
+          <ul>
+            <li>You need materialized views or streaming tables owned by a pipeline.</li>
+            <li>You need more than managed tables. See the <a href="https://github.com/ninilich/ucat/blob/main/docs/limitations.md">Limitations</a> (the project is actively developing; the <a href="https://github.com/ninilich/ucat/blob/main/ROADMAP.md">Roadmap</a> shows what is next).</li>
+          </ul>
+          <details class="more">
+            <summary>What each tool is for, and where <span class="uc">u<span>cat</span></span> fits</summary>
+            <p><strong>Terraform</strong> manages infrastructure, tables included, through the <a href="https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/sql_table">Databricks provider</a>. It keeps a state file and runs the SQL on a cluster or a SQL warehouse. The provider documentation itself warns that it &quot;doesn&#x27;t handle complex cases of schema evolution&quot; and recommends specialised tools such as Liquibase and Flyway, which run versioned migrations. <span class="uc">u<span>cat</span></span> is a specialised tool for Unity Catalog tables that is declarative instead: no state file, a plan with the statements, no Terraform workflow for a schema change.</p>
+            <p><strong>Declarative Automation Bundles</strong> deploy pipelines, jobs and other resources, among them catalogs, schemas, volumes and registered models. <a href="https://docs.databricks.com/aws/en/dev-tools/bundles/resources">Tables are not a bundle resource type</a>. Deployments use the <a href="https://docs.databricks.com/aws/en/dev-tools/bundles/direct">direct engine, which keeps its own state file</a> (the Terraform engine was removed in CLI 1.20.0).  <span class="uc">u<span>cat</span></span> deploys the standalone tables next to the pipelines that bundles deploy.</p>
+            <p><strong>Lakeflow pipelines</strong> build materialized views and streaming tables. While a pipeline is active, it <a href="https://docs.databricks.com/aws/en/ldp/unity-catalog">manages the refresh schedule and permissions of its tables</a>: the table and its pipeline are one unit. This is a different ecosystem from standalone managed tables. If your table is produced by such a pipeline, it is not a job for <span class="uc">u<span>cat</span></span>.</p>
+            <p><strong>dbt</strong> transforms data. A table is the output of a model, so its schema follows the model&#x27;s SQL, and dbt manages only the tables it builds. <span class="uc">u<span>cat</span></span> is for the tables dbt does not build, for example the tables you load data into, and for keeping their definitions reviewed in git.</p>
+            <p><strong>Atlas</strong> is a schema management tool with a <a href="https://www.atlasgo.io/guides/databricks/automatic-migrations">declarative mode and Databricks support</a>. Databricks is available only on its <strong class="em">Pro plan</strong> or during a trial, and the schema is described in SQL. <span class="uc">u<span>cat</span></span> is open source, uses YAML and is built only for Unity Catalog tables.</p>
+            <p><strong>Notebooks with <code>CREATE TABLE IF NOT EXISTS</code></strong> are the common baseline, and in our view a workaround for a missing tool. Software engineering settled this long ago: a <a href="https://martinfowler.com/articles/evodb.html">schema change is a versioned migration applied by automation</a>, kept apart from the code that uses the table, and data teams now keep <a href="https://soda.io/blog/guide-to-data-contracts">contracts as code in Git</a> instead of scattering them across jobs. For standalone Unity Catalog tables, nothing in the matrix above did that job. <span class="uc">u<span>cat</span></span> does.</p>
+          </details>
+          <p class="foot">Products change: if something here is out of date, please open an issue. All product names and trademarks are the property of their respective owners.</p>
+        </div>
+      </section>
+
+      <section class="panel" id="quickstart" data-title="Quickstart">
+        <h2 tabindex="-1">Quickstart</h2>
+        <p class="lead">From install to the first plan in about five minutes.</p>
+        <ol class="steps">
+          <li>
+            <h3>Install</h3>
+            Not released yet; the first release will ship binaries for Linux, macOS and Windows. For now, install from source (Go 1.26 or newer).
+            <pre><code>go install github.com/ninilich/ucat@latest
+ucat version</code></pre>
+          </li>
+          <li>
+            <h3>Authenticate</h3>
+            Log in the usual Databricks way. <span class="uc">u<span>cat</span></span> uses the workspace host of the target and the login you made for that host.
+            <pre><code>databricks auth login --host https://&lt;workspace&gt;.cloud.databricks.com</code></pre>
+          </li>
+          <li>
+            <h3>Create a project</h3>
+            <pre><code>ucat init</code></pre>
+          </li>
+          <li>
+            <h3>See what would change</h3>
+            <pre><code>ucat plan -t dev</code></pre>
+          </li>
+          <li class="has-cato">
+            <h3>Apply</h3>
+            <pre><code>ucat apply -t dev</code></pre>
+            <img class="step-cato" src="assets/cato-apply.svg" width="150" height="150" alt="Cato about to press the apply button">
+          </li>
+        </ol>
+        <p>Already have tables in Unity Catalog? Import them: <code>ucat pull -t dev</code> writes the YAML for you.</p>
+        <p>Want to try it on a ready project? <a href="https://github.com/ninilich/ucat/tree/main/examples/quickstart">The quickstart example</a> creates a small shop schema, changes it twice and cleans up.</p>
+        <p><a href="https://github.com/ninilich/ucat/blob/main/docs/getting-started.md">Full getting-started guide</a></p>
+      </section>
+
+
+    </main>
+  </div>
+  <script src="assets/site.js"></script>
+</body>
+</html>

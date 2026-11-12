@@ -1,0 +1,24 @@
+== ucat validate
+-- exit code
+0
+-- stdout
+| ✓ all local checks passed
+-- stderr
+(empty)
+== ucat validate -t dev
+-- exit code
+0
+-- stdout
+| ✓ all local checks passed
+| ✓ schema dev.gold exists
+| ✓ schema dev.silver exists
+| ✓ warehouse wh1 reachable
+-- stderr
+(empty)
+== ucat plan -t dev
+-- exit code
+0
+-- stdout
+| No changes. Infrastructure is up-to-date.
+-- stderr
+(empty)

@@ -1,0 +1,4 @@
+project: my-platform
+tables_dir: tables
+workspace:
+  warehouse_id: abc123default

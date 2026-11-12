@@ -1,0 +1,12 @@
+-- stdin
+"proj\nmain\nsil ver\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+-- stderr
+| Error: logical schema name "sil ver" must contain only letters, digits, underscores and hyphens (at most 100 characters) and must not be a reserved Windows name
+-- files
+(none)

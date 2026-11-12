@@ -1,0 +1,24 @@
+name: orders
+schema: silver
+comment: "Raw orders from the source system"
+
+columns:
+  - name: id
+    type: BIGINT
+    nullable: false
+    comment: "Primary key"
+  - name: customer_id
+    type: BIGINT
+    nullable: false
+  - name: amount
+    type: DECIMAL(18,2)
+    nullable: true
+  - name: status
+    type: STRING
+    nullable: true
+
+clustering:
+  columns: [customer_id, status]
+
+tblproperties:
+  delta.enableChangeDataFeed: "true"

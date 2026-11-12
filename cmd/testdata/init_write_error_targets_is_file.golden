@@ -1,0 +1,35 @@
+-- stdin
+"proj\nmain\nsilver\nsilver\ndev\n\n\n\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'dev': 
+| UC catalog name for target 'dev' [main]: 
+| SQL warehouse ID for target 'dev' (from Databricks UI > SQL Warehouses, optional): 
+| ✓ Created ucat.yml
+| ✓ Created catalogs/main.yml
+-- stderr
+| project was created partially: ucat.yml, catalogs/, catalogs/main.yml; remove them or fix the cause and rerun init in an empty directory
+| Error: mkdir targets: mkdir: <os error>
+-- files
+catalogs/
+catalogs/main.yml
+targets
+ucat.yml
+-- content catalogs/main.yml
+| name: main
+| uc_name: main
+| schemas:
+|   silver:
+|     uc_name: silver
+-- content targets
+| x
+\ no newline at end
+-- content ucat.yml
+| project: proj
+| tables_dir: tables
