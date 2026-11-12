@@ -1,0 +1,58 @@
+-- stdin
+"proj\nmain\nsilver\nsilver\ndev,prod\nh1\n\nw1\nh2\n\nw2\n"
+-- exit code
+0
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'dev': 
+| UC catalog name for target 'dev' [main_dev]: 
+| SQL warehouse ID for target 'dev' (from Databricks UI > SQL Warehouses, optional): 
+| Workspace host for 'prod': 
+| UC catalog name for target 'prod' [main_prod]: 
+| SQL warehouse ID for target 'prod' (from Databricks UI > SQL Warehouses, optional): 
+| ✓ Created ucat.yml
+| ✓ Created catalogs/main.yml
+| ✓ Created targets/dev.yml
+| ✓ Created targets/prod.yml
+| ✓ Created tables/
+| 
+| Next steps:
+|   ucat pull -t dev    # import existing tables
+|   ucat plan -t dev    # preview changes
+-- stderr
+(empty)
+-- files
+catalogs/
+catalogs/main.yml
+tables/
+targets/
+targets/dev.yml
+targets/prod.yml
+ucat.yml
+-- content catalogs/main.yml
+| name: main
+| uc_name: main
+| schemas:
+|   silver:
+|     uc_name: silver
+-- content targets/dev.yml
+| workspace:
+|   host: h1
+|   warehouse_id: w1
+| catalogs:
+|   main:
+|     uc_name: main_dev
+-- content targets/prod.yml
+| workspace:
+|   host: h2
+|   warehouse_id: w2
+| catalogs:
+|   main:
+|     uc_name: main_prod
+-- content ucat.yml
+| project: proj
+| tables_dir: tables

@@ -1,0 +1,7 @@
+# Copy to targets/prod.yml. The same table files run against another catalog or workspace.
+workspace:
+  host: https://your-prod-workspace.cloud.databricks.com
+  warehouse_id: your-prod-warehouse-id
+catalogs:
+  main:
+    uc_name: your_catalog_prod

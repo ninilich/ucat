@@ -1,0 +1,87 @@
+version: 2
+
+project_name: ucat
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: ucat
+    main: ./main.go
+    binary: ucat
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X github.com/ninilich/ucat/cmd.version={{.Version}}
+      - -X github.com/ninilich/ucat/cmd.commit={{.Commit}}
+      - -X github.com/ninilich/ucat/cmd.buildDate={{.Date}}
+
+archives:
+  - id: ucat
+    ids:
+      - ucat
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - LICENSE
+      - README.md
+      - THIRD_PARTY_NOTICES.md
+
+release:
+  github:
+    owner: ninilich
+    name: ucat
+  prerelease: auto
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  version_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+# Keyless cosign signature of checksums.txt (GitHub OIDC identity of the release workflow).
+signs:
+  - cmd: cosign
+    signature: "${artifact}.sigstore.json"
+    args:
+      - sign-blob
+      - "--bundle=${signature}"
+      - "${artifact}"
+      - "--yes"
+    artifacts: checksum
+    output: true
+
+brews:
+  - name: ucat
+    repository:
+      owner: ninilich
+      name: homebrew-ucat
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: "https://github.com/ninilich/ucat"
+    description: "Declarative management of Databricks Unity Catalog managed tables from YAML"
+    license: "Apache-2.0"
+    skip_upload: false
+    test: |
+      system "#{bin}/ucat", "version"

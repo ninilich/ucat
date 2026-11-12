@@ -1,0 +1,107 @@
+error|catalog name is empty|catalogs/empty.yml
+error|logical schema "gold" is defined in both catalog "n1" (catalogs/n1.yml) and catalog "main" (catalogs/main.yml); a table references a schema by logical name only|schema:gold
+error|logical schema "silver" is defined in both catalog "common" (catalogs/common.yml) and catalog "main" (catalogs/main.yml); a table references a schema by logical name only|schema:silver
+error|logical catalog names "Main" (catalogs/Main.yml) and "main" (catalogs/main.yml) differ only in case|catalog:Main
+error|logical schema names "Silver" (catalogs/legacy.yml) and "silver" (catalogs/common.yml) differ only in case|schema:Silver
+error|catalog "legacy": uc_name is not set (set it in the catalog file or override it in the target)|catalogs/legacy.yml
+error|schemas "gold3" (catalogs/n1.yml), "gold2" (catalogs/n1.yml) and "gold" (catalogs/n1.yml) all resolve to physical schema aaa.t; each logical schema must map to its own physical schema|schema:gold3
+error|schemas "y" (catalog:b) and "x" (catalogs/a.yml) both resolve to physical schema phys.s; each logical schema must map to its own physical schema|schema:y
+error|catalog "Prod" must be lowercase: Unity Catalog stores catalog names in lowercase|catalog:Main
+error|schema "Gold" must be lowercase: Unity Catalog stores schema names in lowercase|schema:main.gold
+error|table "zcm": clustering column "nope" is not defined in columns|tables/silver/zcm.yml
+error|table "zcm": column name is required|tables/silver/zcm.yml
+error|table "zcm", column "": type "BAD1" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/zcm.yml
+error|table "zcm": rename_from "r1" is used by both column "x" and column ""|tables/silver/zcm.yml
+warning|table "zcm", column "p q": name contains a dot or whitespace|tables/silver/zcm.yml
+error|table "zcm", column "p q": type "BIG INT" is not supported: whitespace inside a word|tables/silver/zcm.yml
+error|table "zcm": rename_from "r1" is used by both column "x" and column "p q"|tables/silver/zcm.yml
+warning|table "zcm", column "P Q": name contains a dot or whitespace|tables/silver/zcm.yml
+error|table "zcm": duplicate column "P Q" (column names are case-insensitive)|tables/silver/zcm.yml
+error|table "zcm", column "P Q": type "BAD3" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/zcm.yml
+error|table "zcm", column "dd": type "NOPE" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/zcm.yml
+warning|table "zcm", column "dd": rename_from is same as name; no rename will occur|tables/silver/zcm.yml
+warning|table "zcm", column "a b": name contains a dot or whitespace|tables/silver/zcm.yml
+warning|table "zcm", column "a b": rename_from is same as name; no rename will occur|tables/silver/zcm.yml
+error|table "zcm", column "s": type "BAD4" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/zcm.yml
+error|table "zcm": column "s": rename_from "t" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/zcm.yml
+error|table "zcm": column "t": rename_from "s" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/zcm.yml
+error|table "zcm": duplicate column "T" (column names are case-insensitive)|tables/silver/zcm.yml
+error|table "zcm": rename_from "s" is used by both column "t" and column "T"|tables/silver/zcm.yml
+error|table "zcm": column "T": rename_from "s" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/zcm.yml
+warning|table "zcm", column "e.f": name contains a dot or whitespace|tables/silver/zcm.yml
+error|table "zcm": rename_from "r1" is used by both column "x" and column "e.f"|tables/silver/zcm.yml
+error|table "zcm": duplicate column "Dd" (column names are case-insensitive)|tables/silver/zcm.yml
+warning|table "zcm", column "Dd": rename_from is same as name; no rename will occur|tables/silver/zcm.yml
+warning|table rename_from "Same" is same as name; no rename will occur|tables/nowhere/zk6.yml
+error|table name "Same" must be lowercase: Unity Catalog stores table names in lowercase|tables/nowhere/zk6.yml
+error|table "Same": rename_from "Same" must be lowercase: Unity Catalog stores table names in lowercase|tables/nowhere/zk6.yml
+error|unknown schema ref "nowhere": not defined in any catalog config|tables/nowhere/zk6.yml
+error|table name is required|tables/nowhere/zk5.yml
+error|rename_from set but table name is empty|tables/nowhere/zk5.yml
+error|table "": rename_from "OldX" must be lowercase: Unity Catalog stores table names in lowercase|tables/nowhere/zk5.yml
+error|unknown schema ref "nowhere": not defined in any catalog config|tables/nowhere/zk5.yml
+error|table "zk4": clustering.auto and clustering.columns are mutually exclusive|tables/silver/zk4.yml
+error|table "zk4": drop: true cannot be combined with rename_from (remove rename_from)|tables/silver/zk4.yml
+error|table "zk4", column "a": type "BAD" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/zk4.yml
+error|table "zk3": clustering and partitioning are mutually exclusive|tables/silver/zk3.yml
+error|table "zk3": clustering must set columns or auto: true (to disable clustering, remove the block)|tables/silver/zk3.yml
+error|table "zk3": drop: true cannot be combined with rename_from (remove rename_from)|tables/silver/zk3.yml
+error|table "zk3": column name is required|tables/silver/zk3.yml
+error|table "zk3", column "": type "BAD" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/zk3.yml
+warning|table "zk.two": name contains a dot or whitespace|tables/silver/zk2.yml
+error|table "zk.two": columns is required|tables/silver/zk2.yml
+error|table "zk.two": clustering and partitioning are mutually exclusive|tables/silver/zk2.yml
+error|table "zk.two": clustering must set columns or auto: true (to disable clustering, remove the block)|tables/silver/zk2.yml
+error|table "zk.two": partitioning column "pp" is not defined in columns|tables/silver/zk2.yml
+error|table name "Zk.One" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/zk1.yml
+error|table "Zk.One": rename_from "ZBase" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/zk1.yml
+error|unknown schema ref "nowhere": not defined in any catalog config|tables/silver/zk1.yml
+error|table "Zk.One": rename_from "ZBase" refers to a table that is also defined in tables/silver/zbase.yml; remove one of them|tables/silver/zk1.yml
+warning|table "Zk.One": name contains a dot or whitespace|tables/silver/zk1.yml
+error|table "Zk.One": columns is required|tables/silver/zk1.yml
+error|table "Zk.One": clustering and partitioning are mutually exclusive|tables/silver/zk1.yml
+error|table "Zk.One": clustering.auto and clustering.columns are mutually exclusive|tables/silver/zk1.yml
+error|table "Zk.One": clustering column "nope" is not defined in columns|tables/silver/zk1.yml
+error|table "Zk.One": partitioning column "nope2" is not defined in columns|tables/silver/zk1.yml
+error|table name "Zk.One" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/zk0.yml
+error|table "Zk.One": rename_from "ZBase" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/zk0.yml
+error|unknown schema ref "nowhere": not defined in any catalog config|tables/silver/zk0.yml
+error|duplicate table "Zk.One" in prod.silver: also defined in tables/silver/zk1.yml|tables/silver/zk0.yml
+error|rename_from "ZBase" is used by both table "Zk.One" and table "Zk.One"|tables/silver/zk0.yml
+error|table "Zk.One": rename_from "ZBase" refers to a table that is also defined in tables/silver/zbase.yml; remove one of them|tables/silver/zk0.yml
+warning|table "Zk.One": name contains a dot or whitespace|tables/silver/zk0.yml
+error|table name "ZBase" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/zbase.yml
+error|table name is required|table:
+warning|table rename_from "nosrc" is same as name; no rename will occur|table:nosrc
+error|table name "Upper" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/upper.yml
+error|table "Upper": rename_from "OldUpper" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/upper.yml
+error|table "cols": column name is required|tables/silver/cols.yml
+warning|table "cols", column "a b": name contains a dot or whitespace|tables/silver/cols.yml
+error|table "cols", column "a b": type "VARCHAR(5)" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/cols.yml
+warning|table "cols", column "x.y": name contains a dot or whitespace|tables/silver/cols.yml
+error|table "cols", column "x.y": type "BIG INT" is not supported: whitespace inside a word|tables/silver/cols.yml
+error|table "cols": duplicate column "DUP" (column names are case-insensitive)|tables/silver/cols.yml
+warning|table "cols", column "same": rename_from is same as name; no rename will occur|tables/silver/cols.yml
+error|table "cols": rename_from "OLD" is used by both column "n1" and column "n2"|tables/silver/cols.yml
+error|table "cols": column "c1": rename_from "c2" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/cols.yml
+error|table "cols": column "c2": rename_from "c1" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/cols.yml
+error|table "cols", column "nottype": type "" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/cols.yml
+error|table "emptycl": clustering must set columns or auto: true (to disable clustering, remove the block)|tables/bronze/emptycl.yml
+error|table "both": clustering and partitioning are mutually exclusive|tables/bronze/both.yml
+error|table "both": clustering.auto and clustering.columns are mutually exclusive|tables/bronze/both.yml
+error|table "both": clustering column "missing" is not defined in columns|tables/bronze/both.yml
+error|table "both": partitioning column "gone" is not defined in columns|tables/bronze/both.yml
+error|table "dropped": drop: true cannot be combined with rename_from (remove rename_from)|tables/gold/dropped.yml
+error|table "nocols": columns is required|tables/gold/nocols.yml
+warning|table "with.dot": name contains a dot or whitespace|tables/gold/dot.yml
+error|table "swap_b": rename_from "swap_a" refers to a table that is also defined in tables/silver/swap_a.yml; remove one of them|tables/silver/swap_b.yml
+error|table "swap_a": rename_from "swap_b" refers to a table that is also defined in tables/silver/swap_b.yml; remove one of them|tables/silver/swap_a.yml
+error|rename_from "shared_old" is used by both table "r2" and table "r1"|tables/silver/r1.yml
+error|unknown schema ref "nowhere": not defined in any catalog config|tables/nowhere/ghost_tbl.yml
+error|duplicate table "dup" in prod.silver: also defined in tables/silver/dup3.yml|tables/silver/dup2.yml
+error|rename_from "dupold" is used by both table "dup" and table "dup"|tables/silver/dup2.yml
+warning|table rename_from "Dup" is same as name; no rename will occur|tables/silver/dup1.yml
+error|table name "Dup" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/dup1.yml
+error|table "Dup": rename_from "Dup" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/dup1.yml
+error|table name is required|tables/silver/noname.yml
+error|rename_from set but table name is empty|tables/silver/noname.yml

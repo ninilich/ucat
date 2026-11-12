@@ -1,0 +1,12 @@
+# Normalize line endings: text files are LF in the repository and in the working tree on every OS.
+# Go tests compare program output (always LF) with testdata/*.golden, so CRLF checkouts on Windows
+# (core.autocrlf=true) must not alter them.
+* text=auto eol=lf
+
+*.png binary
+*.gif binary
+
+*.svg text
+*.golden text eol=lf
+testdata/** text eol=lf
+*.sh text eol=lf

@@ -1,0 +1,13 @@
+-- stdin
+"proj\n"
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| Error: ucat.yml already exists in current directory
+-- files
+ucat.yml
+-- content ucat.yml
+| x
+\ no newline at end

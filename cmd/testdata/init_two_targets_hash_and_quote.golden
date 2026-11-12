@@ -1,0 +1,58 @@
+-- stdin
+"p#1\nmain\ns\ns\ndev,prod\nhttps://dev.example.com/#x\ndev_cat\n'wh'\nhttps://p\nprod_cat\n: wh\n"
+-- exit code
+0
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [s]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'dev': 
+| UC catalog name for target 'dev' [main_dev]: 
+| SQL warehouse ID for target 'dev' (from Databricks UI > SQL Warehouses, optional): 
+| Workspace host for 'prod': 
+| UC catalog name for target 'prod' [main_prod]: 
+| SQL warehouse ID for target 'prod' (from Databricks UI > SQL Warehouses, optional): 
+| ✓ Created ucat.yml
+| ✓ Created catalogs/main.yml
+| ✓ Created targets/dev.yml
+| ✓ Created targets/prod.yml
+| ✓ Created tables/
+| 
+| Next steps:
+|   ucat pull -t dev    # import existing tables
+|   ucat plan -t dev    # preview changes
+-- stderr
+(empty)
+-- files
+catalogs/
+catalogs/main.yml
+tables/
+targets/
+targets/dev.yml
+targets/prod.yml
+ucat.yml
+-- content catalogs/main.yml
+| name: main
+| uc_name: main
+| schemas:
+|   s:
+|     uc_name: s
+-- content targets/dev.yml
+| workspace:
+|   host: https://dev.example.com/#x
+|   warehouse_id: '''wh'''
+| catalogs:
+|   main:
+|     uc_name: dev_cat
+-- content targets/prod.yml
+| workspace:
+|   host: https://p
+|   warehouse_id: ': wh'
+| catalogs:
+|   main:
+|     uc_name: prod_cat
+-- content ucat.yml
+| project: p#1
+| tables_dir: tables

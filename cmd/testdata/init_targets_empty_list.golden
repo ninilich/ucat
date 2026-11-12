@@ -1,0 +1,14 @@
+-- stdin
+"proj\nmain\nsilver\nsilver\n , ,\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+| Target names (comma-separated) [dev]: 
+-- stderr
+| Error: target names: at least one name is required
+-- files
+(none)

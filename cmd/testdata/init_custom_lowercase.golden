@@ -1,0 +1,46 @@
+-- stdin
+"my proj: x\nSales\nraw\nraw_uc\nstage\nhttps://stage.example.com\nsales_uc\nwh-1\n"
+-- exit code
+0
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [raw]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'stage': 
+| UC catalog name for target 'stage' [sales]: 
+| SQL warehouse ID for target 'stage' (from Databricks UI > SQL Warehouses, optional): 
+| ✓ Created ucat.yml
+| ✓ Created catalogs/Sales.yml
+| ✓ Created targets/stage.yml
+| ✓ Created tables/
+| 
+| Next steps:
+|   ucat pull -t stage    # import existing tables
+|   ucat plan -t stage    # preview changes
+-- stderr
+(empty)
+-- files
+catalogs/
+catalogs/Sales.yml
+tables/
+targets/
+targets/stage.yml
+ucat.yml
+-- content catalogs/Sales.yml
+| name: Sales
+| uc_name: sales
+| schemas:
+|   raw:
+|     uc_name: raw_uc
+-- content targets/stage.yml
+| workspace:
+|   host: https://stage.example.com
+|   warehouse_id: wh-1
+| catalogs:
+|   Sales:
+|     uc_name: sales_uc
+-- content ucat.yml
+| project: 'my proj: x'
+| tables_dir: tables

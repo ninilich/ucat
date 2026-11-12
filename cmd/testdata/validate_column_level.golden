@@ -1,0 +1,51 @@
+== ucat validate
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: table "other", column "bad": type "MONEY" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...> (tables/gold/other.yml)
+| warning: table "cols", column "a b": name contains a dot or whitespace (tables/silver/cols.yml)
+| error: table "cols", column "a b": type "VARCHAR(5)" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...> (tables/silver/cols.yml)
+| warning: table "cols", column "x.y": name contains a dot or whitespace (tables/silver/cols.yml)
+| error: table "cols", column "x.y": type "BIG INT" is not supported: whitespace inside a word (tables/silver/cols.yml)
+| error: table "cols": duplicate column "DUP" (column names are case-insensitive) (tables/silver/cols.yml)
+| warning: table "cols", column "same": rename_from is same as name; no rename will occur (tables/silver/cols.yml)
+| error: table "cols": rename_from "OLD" is used by both column "n1" and column "n2" (tables/silver/cols.yml)
+| error: table "cols": column "c1": rename_from "c2" refers to a column which is also renamed; chain and swap renames are not supported (tables/silver/cols.yml)
+| error: table "cols": column "c2": rename_from "c1" refers to a column which is also renamed; chain and swap renames are not supported (tables/silver/cols.yml)
+| Error: local validation failed
+== ucat validate -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: table "other", column "bad": type "MONEY" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...> (tables/gold/other.yml)
+| warning: table "cols", column "a b": name contains a dot or whitespace (tables/silver/cols.yml)
+| error: table "cols", column "a b": type "VARCHAR(5)" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...> (tables/silver/cols.yml)
+| warning: table "cols", column "x.y": name contains a dot or whitespace (tables/silver/cols.yml)
+| error: table "cols", column "x.y": type "BIG INT" is not supported: whitespace inside a word (tables/silver/cols.yml)
+| error: table "cols": duplicate column "DUP" (column names are case-insensitive) (tables/silver/cols.yml)
+| warning: table "cols", column "same": rename_from is same as name; no rename will occur (tables/silver/cols.yml)
+| error: table "cols": rename_from "OLD" is used by both column "n1" and column "n2" (tables/silver/cols.yml)
+| error: table "cols": column "c1": rename_from "c2" refers to a column which is also renamed; chain and swap renames are not supported (tables/silver/cols.yml)
+| error: table "cols": column "c2": rename_from "c1" refers to a column which is also renamed; chain and swap renames are not supported (tables/silver/cols.yml)
+| Error: local validation failed
+== ucat plan -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: table "other", column "bad": type "MONEY" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...> (tables/gold/other.yml)
+| warning: table "cols", column "a b": name contains a dot or whitespace (tables/silver/cols.yml)
+| error: table "cols", column "a b": type "VARCHAR(5)" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...> (tables/silver/cols.yml)
+| warning: table "cols", column "x.y": name contains a dot or whitespace (tables/silver/cols.yml)
+| error: table "cols", column "x.y": type "BIG INT" is not supported: whitespace inside a word (tables/silver/cols.yml)
+| error: table "cols": duplicate column "DUP" (column names are case-insensitive) (tables/silver/cols.yml)
+| warning: table "cols", column "same": rename_from is same as name; no rename will occur (tables/silver/cols.yml)
+| error: table "cols": rename_from "OLD" is used by both column "n1" and column "n2" (tables/silver/cols.yml)
+| error: table "cols": column "c1": rename_from "c2" refers to a column which is also renamed; chain and swap renames are not supported (tables/silver/cols.yml)
+| error: table "cols": column "c2": rename_from "c1" refers to a column which is also renamed; chain and swap renames are not supported (tables/silver/cols.yml)
+| Error: local validation failed

@@ -1,0 +1,258 @@
+step 1 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 0,
+  "failed": {
+    "op": "create_table",
+    "step": 1,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_create",
+    "path": "dev.silver.t_create",
+    "description": "create table `dev`.`silver`.`t_create` (1 column)",
+    "sql": "CREATE TABLE `dev`.`silver`.`t_create` (\n  `id` BIGINT NOT NULL\n)",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 12
+}
+step 2 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 1,
+  "failed": {
+    "op": "rename_table",
+    "step": 2,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_new",
+    "previous_name": "t_old",
+    "path": "dev.silver.t_new",
+    "description": "rename table t_old → t_new",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_old` RENAME TO `dev`.`silver`.`t_new`",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 11
+}
+step 3 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 2,
+  "failed": {
+    "op": "set_tbl_properties",
+    "step": 3,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "path": "dev.silver.t_cols",
+    "description": "set 1 tblproperties",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` SET TBLPROPERTIES ('team'='data')",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 10
+}
+step 4 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 3,
+  "failed": {
+    "op": "unset_tbl_properties",
+    "step": 4,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "path": "dev.silver.t_cols",
+    "description": "unset 1 tblproperties",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` UNSET TBLPROPERTIES ('obsolete')",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 9
+}
+step 5 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 4,
+  "failed": {
+    "op": "rename_column",
+    "step": 5,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "column": "new_n",
+    "previous_name": "old_n",
+    "path": "dev.silver.t_cols",
+    "description": "rename column \"old_n\" → \"new_n\"",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` RENAME COLUMN `old_n` TO `new_n`",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 8
+}
+step 6 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 5,
+  "failed": {
+    "op": "alter_column",
+    "step": 6,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "column": "c_type",
+    "alter": "type",
+    "path": "dev.silver.t_cols",
+    "description": "alter column \"c_type\" type varchar(10) → STRING",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` ALTER COLUMN `c_type` TYPE STRING",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 7
+}
+step 7 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 6,
+  "failed": {
+    "op": "alter_column",
+    "step": 7,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "column": "c_cmt",
+    "alter": "comment",
+    "path": "dev.silver.t_cols",
+    "description": "alter column \"c_cmt\" comment → \"after\"",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` ALTER COLUMN `c_cmt` COMMENT 'after'",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 6
+}
+step 8 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 7,
+  "failed": {
+    "op": "alter_column",
+    "step": 8,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "column": "c_nul",
+    "alter": "nullable",
+    "path": "dev.silver.t_cols",
+    "description": "alter column \"c_nul\" nullable true → false",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` ALTER COLUMN `c_nul` SET NOT NULL",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 5
+}
+step 9 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 8,
+  "failed": {
+    "op": "add_column",
+    "step": 9,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "column": "added",
+    "path": "dev.silver.t_cols",
+    "description": "add column \"added\" INT",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` ADD COLUMN `added` INT",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 4
+}
+step 10 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 9,
+  "failed": {
+    "op": "alter_clustering",
+    "step": 10,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "path": "dev.silver.t_cols",
+    "description": "set clustering by (id)",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` CLUSTER BY (`id`)",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 3
+}
+step 11 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 10,
+  "failed": {
+    "op": "alter_table_comment",
+    "step": 11,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "path": "dev.silver.t_cols",
+    "description": "set comment \"hello\"",
+    "sql": "COMMENT ON TABLE `dev`.`silver`.`t_cols` IS 'hello'",
+    "destructive": false,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 2
+}
+step 12 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 11,
+  "failed": {
+    "op": "drop_table",
+    "step": 12,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_drop",
+    "path": "dev.silver.t_drop",
+    "description": "drop table `dev`.`silver`.`t_drop`",
+    "sql": "DROP TABLE `dev`.`silver`.`t_drop`",
+    "destructive": true,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 1
+}
+step 13 fails:
+{
+  "schema_version": 1,
+  "total": 13,
+  "applied": 12,
+  "failed": {
+    "op": "drop_column",
+    "step": 13,
+    "catalog": "dev",
+    "schema": "silver",
+    "table": "t_cols",
+    "column": "gone",
+    "path": "dev.silver.t_cols",
+    "description": "drop column \"gone\"",
+    "sql": "ALTER TABLE `dev`.`silver`.`t_cols` DROP COLUMN `gone`",
+    "destructive": true,
+    "error": "statement FAILED: boom"
+  },
+  "skipped": 0
+}

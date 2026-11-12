@@ -1,0 +1,10 @@
+-- stdin
+""
+-- exit code
+1
+-- stdout
+| Project name: 
+-- stderr
+| Error: project name is required
+-- files
+(none)

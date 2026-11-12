@@ -1,0 +1,69 @@
+== several tables in input order
+change 0: alter_table_comment destructive=false table=`prod`.`silver`.`zeta`
+  describe: set comment "z"
+  sql: "COMMENT ON TABLE `prod`.`silver`.`zeta` IS 'z'"
+change 1: create_table destructive=false table=`prod`.`silver`.`alpha`
+  describe: create table `prod`.`silver`.`alpha` (1 column)
+  sql: "CREATE TABLE `prod`.`silver`.`alpha` (\n  `id` BIGINT\n)"
+change 2: alter_column destructive=false table=`prod`.`silver`.`mid`
+  describe: alter column "id" type varchar(10) → STRING
+  sql: "ALTER TABLE `prod`.`silver`.`mid` ALTER COLUMN `id` TYPE STRING"
+change 3: drop_table destructive=true table=`prod`.`silver`.`gone`
+  describe: drop table `prod`.`silver`.`gone`
+  sql: "DROP TABLE `prod`.`silver`.`gone`"
+diag: warning|drop: true but table not in UC - file can be removed|tables/silver/already_gone.yml
+== rename_from table not renamed yet
+change 0: rename_table destructive=false table=`prod`.`silver`.`old`
+  describe: rename table old → new
+  sql: "ALTER TABLE `prod`.`silver`.`old` RENAME TO `prod`.`silver`.`new`"
+diags: none
+== rename_from after apply
+changes: none
+diag: warning|table "silver.new": rename_from "old" can be removed after apply|tables/silver/new.yml
+== rename_from source missing creates new
+change 0: create_table destructive=false table=`prod`.`silver`.`new`
+  describe: create table `prod`.`silver`.`new` (1 column)
+  sql: "CREATE TABLE `prod`.`silver`.`new` (\n  `id` BIGINT\n)"
+diag: warning|table "silver.new": rename_from "old" not found in UC schema - a new table will be created|tables/silver/new.yml
+== rename_from both exist
+changes: none
+diag: warning|table "silver.new": rename_from "old" ignored: both "old" and "new" exist in UC|tables/silver/new.yml
+== rename_from equals name
+changes: none
+diags: none
+== rename_from with drop
+change 0: drop_table destructive=true table=`prod`.`silver`.`new`
+  describe: drop table `prod`.`silver`.`new`
+  sql: "DROP TABLE `prod`.`silver`.`new`"
+diags: none
+== rename_from with drop and nothing live
+changes: none
+diag: warning|drop: true but table not in UC - file can be removed|tables/silver/new.yml
+== mixed diagnostics from several tables
+changes: none
+diag: error|table "silver.a", column "n": a new NOT NULL column cannot be added to an existing table (not supported in v1): add it as nullable, fill it with data, then set nullable: false|tables/silver/a.yml
+diag: warning|table "silver.b": partitioning cannot be changed after creation; ignoring|tables/silver/b.yml
+diag: error|table "silver.c": column "x": rename_from "typo" not found in the UC table and "x" does not exist yet; fix the name or remove rename_from to add "x" as a new column|tables/silver/c.yml
+diag: warning|table "silver.d": rename_from "d_old" can be removed after apply|tables/silver/d.yml
+diag: warning|drop: true but table not in UC - file can be removed|tables/silver/e.yml
+== unsupported type change in one table
+change 0: alter_table_comment destructive=false table=`prod`.`silver`.`b`
+  describe: set comment "b"
+  sql: "COMMENT ON TABLE `prod`.`silver`.`b` IS 'b'"
+diag: error|table "silver.a", column "id": changing the type from BIGINT to INT is not supported in v1 (only varchar(n)/char(n) to STRING); type widening is planned for v2|tables/silver/a.yml
+== all tables new
+change 0: create_table destructive=false table=`prod`.`silver`.`t2`
+  describe: create table `prod`.`silver`.`t2` (1 column)
+  sql: "CREATE TABLE `prod`.`silver`.`t2` (\n  `id` BIGINT\n)"
+change 1: create_table destructive=false table=`prod`.`silver`.`t1`
+  describe: create table `prod`.`silver`.`t1` (1 column)
+  sql: "CREATE TABLE `prod`.`silver`.`t1` (\n  `id` BIGINT\n)"
+diags: none
+== rename_from after apply plus partitioning warning
+changes: none
+diag: warning|table "silver.new": rename_from "old" can be removed after apply|tables/silver/new.yml
+diag: warning|table "silver.new": partitioning cannot be changed after creation; ignoring|tables/silver/new.yml
+== rename_from both exist plus column error
+changes: none
+diag: warning|table "silver.new": rename_from "old" ignored: both "old" and "new" exist in UC|tables/silver/new.yml
+diag: error|table "silver.new": column "x": rename_from "typo" not found in the UC table and "x" does not exist yet; fix the name or remove rename_from to add "x" as a new column|tables/silver/new.yml

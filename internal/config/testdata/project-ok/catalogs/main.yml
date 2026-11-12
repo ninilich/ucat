@@ -1,0 +1,7 @@
+name: main
+uc_name: prod
+schemas:
+  silver:
+    uc_name: silver
+  gold:
+    uc_name: gold

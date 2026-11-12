@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation - ucat</title>
+  <meta name="description" content="ucat documentation: getting started, concepts, YAML reference, commands, authentication, CI/CD, limitations.">
+  <script>document.documentElement.className = "js";</script>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="sb-head">
+        <a class="brand" href="index.html#overview"><img src="assets/ucat-icon-tile.svg" width="40" height="40" alt=""><span class="wm">u<span>cat</span></span></a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+      </div>
+      <nav id="menu" aria-label="Main">
+        <ul>
+          <li><a class="item" href="index.html#overview">Overview</a></li>
+          <li><a class="item" href="index.html#how-it-works">How it works</a></li>
+          <li><a class="item" href="index.html#features">Features</a></li>
+          <li><a class="item" href="index.html#compare">Compare</a></li>
+          <li><a class="item" href="index.html#quickstart">Quickstart</a></li>
+          <li><a class="item" href="documentation.html" aria-current="page" data-keep>Documentation</a></li>
+        </ul>
+        <div class="sb-foot">
+          <ul>
+            <li><a class="item" href="https://github.com/ninilich/ucat"><svg class="sb-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+          </ul>
+          <p class="sb-legal"><span class="uc">u<span>cat</span></span> is an independent open-source tool for Databricks.<span>Apache 2.0</span></p>
+        </div>
+      </nav>
+    </aside>
+
+    <main id="main">
+    <section class="panel" id="documentation" data-title="Documentation">
+              <p class="eyebrow">Documentation</p>
+        <h1 tabindex="-1"><span class="uc">u<span>cat</span></span> documentation</h1>
+        <p class="lead">The pages below are Markdown files in the repository; they open on GitHub.</p>
+
+        <h2>Start here</h2>
+        <ul class="doclist">
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/getting-started.md"><strong>Getting started</strong><span>Install, authenticate and run your first plan in five minutes.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/concepts.md"><strong>Concepts</strong><span>Desired state, live state, no state file, one file per table, renames, drops.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/project-layout.md"><strong>Project layout</strong><span>ucat.yml, catalogs, targets and the tables directory.</span></a></li>
+        </ul>
+
+        <h2 class="docgroup">Reference</h2>
+        <ul class="doclist">
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/table-yaml.md"><strong>Table YAML</strong><span>Every field: columns, types, clustering, table properties, comments, nullability.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/commands.md"><strong>Commands</strong><span>init, validate, plan, apply, drop, pull, version: flags, exit codes, JSON output.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/authentication.md"><strong>Authentication and permissions</strong><span>Credential chain, priorities, minimum permissions, SQL warehouse.</span></a></li>
+        </ul>
+
+        <h2 class="docgroup">Guides</h2>
+        <ul class="doclist">
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/ci-cd.md"><strong>CI/CD</strong><span>Running <span class="uc">u<span>cat</span></span> in pipelines, exit codes, service principals, GitHub Actions example.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/troubleshooting.md"><strong>Troubleshooting</strong><span>Common errors and what to do about them.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/faq.md"><strong>FAQ</strong><span>Terraform, manual edits, rollback, shared schemas.</span></a></li>
+          <li><a href="index.html#compare"><strong>Comparison</strong><span><span class="uc">u<span>cat</span></span> next to Terraform, Bundles and Lakeflow, dbt, Atlas and notebooks.</span></a></li>
+        </ul>
+
+        <h2 class="docgroup">Limits and project</h2>
+        <ul class="doclist">
+          <li><a href="https://github.com/ninilich/ucat/blob/main/docs/limitations.md"><strong>Limitations</strong><span>What v1 does and does not do.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/ROADMAP.md"><strong>Roadmap</strong><span>What is planned after v1 and how priorities are set.</span></a></li>
+          <li><a href="https://github.com/ninilich/ucat/blob/main/CONTRIBUTING.md"><strong>Contributing</strong><span>How to build, test and send a change; the architecture is in docs/contributing.</span></a></li>
+        </ul>
+    </section>
+    </main>
+  </div>
+  <script src="assets/site.js"></script>
+</body>
+</html>

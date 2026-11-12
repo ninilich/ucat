@@ -1,0 +1,19 @@
+name: customers
+schema: shop
+comment: "Customers of the shop"
+columns:
+  - name: id
+    type: BIGINT
+    nullable: false
+    comment: "Primary key"
+  - name: email
+    type: STRING
+    nullable: false
+  - name: name
+    type: STRING
+  - name: country
+    type: STRING
+  - name: created_at
+    type: TIMESTAMP
+clustering:
+  columns: [country]

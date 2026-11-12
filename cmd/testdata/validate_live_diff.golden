@@ -1,0 +1,36 @@
+== ucat validate
+-- exit code
+0
+-- stdout
+| ✓ all local checks passed
+-- stderr
+(empty)
+== ucat validate -t dev
+-- exit code
+1
+-- stdout
+| ✓ all local checks passed
+| ✓ schema dev.gold exists
+| ✓ schema dev.silver exists
+| ✓ warehouse wh1 reachable
+-- stderr
+| error: table "silver.a", column "req": a new NOT NULL column cannot be added to an existing table (not supported in v1): add it as nullable, fill it with data, then set nullable: false (tables/silver/a_newnotnull.yml)
+| error: table "silver.b": column "title": rename_from "nmae" not found in the UC table and "title" does not exist yet; fix the name or remove rename_from to add "title" as a new column (tables/silver/b_typo.yml)
+| warning: table "silver.d": rename_from "d_old" can be removed after apply (tables/silver/d_stale.yml)
+| warning: drop: true but table not in UC - file can be removed (tables/silver/e_drop_gone.yml)
+| warning: table "silver.f": partitioning cannot be changed after creation; ignoring (tables/silver/f_part.yml)
+| error: table "silver.g": column "id": cannot rename "name" to "id": column "id" already exists in the UC table (tables/silver/g_conflict.yml)
+| Error: live validation failed for schema dev.silver
+== ucat plan -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| error: table "silver.a", column "req": a new NOT NULL column cannot be added to an existing table (not supported in v1): add it as nullable, fill it with data, then set nullable: false (tables/silver/a_newnotnull.yml)
+| error: table "silver.b": column "title": rename_from "nmae" not found in the UC table and "title" does not exist yet; fix the name or remove rename_from to add "title" as a new column (tables/silver/b_typo.yml)
+| warning: table "silver.d": rename_from "d_old" can be removed after apply (tables/silver/d_stale.yml)
+| warning: drop: true but table not in UC - file can be removed (tables/silver/e_drop_gone.yml)
+| warning: table "silver.f": partitioning cannot be changed after creation; ignoring (tables/silver/f_part.yml)
+| error: table "silver.g": column "id": cannot rename "name" to "id": column "id" already exists in the UC table (tables/silver/g_conflict.yml)
+| Error: diff failed for dev.silver

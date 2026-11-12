@@ -1,0 +1,11 @@
+-- stdin
+"proj\nma.in\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+-- stderr
+| Error: logical catalog name "ma.in" must contain only letters, digits, underscores and hyphens (at most 100 characters) and must not be a reserved Windows name
+-- files
+(none)

@@ -1,0 +1,222 @@
+== create full
+change 0: create_table destructive=false table=`prod`.`silver`.`orders`
+  describe: create table `prod`.`silver`.`orders` (2 columns)
+  sql: "CREATE TABLE `prod`.`silver`.`orders` (\n  `id` BIGINT NOT NULL COMMENT 'pk',\n  `d` DATE\n)\nCOMMENT 'it\\'s orders'\nCLUSTER BY (`id`)\nTBLPROPERTIES ('k1'='v1', 'k2'='v2')"
+diags: none
+== create partitioned
+change 0: create_table destructive=false table=`prod`.`silver`.`orders`
+  describe: create table `prod`.`silver`.`orders` (1 column)
+  sql: "CREATE TABLE `prod`.`silver`.`orders` (\n  `d` DATE\n)\nPARTITIONED BY (`d`)"
+diags: none
+== create clustering auto
+change 0: create_table destructive=false table=`prod`.`silver`.`orders`
+  describe: create table `prod`.`silver`.`orders` (2 columns)
+  sql: "CREATE TABLE `prod`.`silver`.`orders` (\n  `id` BIGINT,\n  `name` STRING COMMENT 'n'\n)\nCLUSTER BY AUTO"
+diags: none
+== drop existing
+change 0: drop_table destructive=true table=`prod`.`silver`.`orders`
+  describe: drop table `prod`.`silver`.`orders`
+  sql: "DROP TABLE `prod`.`silver`.`orders`"
+diags: none
+== drop missing
+changes: none
+diag: warning|drop: true but table not in UC - file can be removed|tables/silver/orders.yml
+== no changes
+changes: none
+diags: none
+== add column
+change 0: add_column destructive=false table=`prod`.`silver`.`orders`
+  describe: add column "extra" INT
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ADD COLUMN `extra` INT COMMENT 'c'"
+diags: none
+== alter type comment nullable both ways
+change 0: alter_column destructive=false table=`prod`.`silver`.`orders`
+  describe: alter column "id" type varchar(10) → STRING
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ALTER COLUMN `id` TYPE STRING"
+change 1: alter_column destructive=false table=`prod`.`silver`.`orders`
+  describe: alter column "id" comment → "new"
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ALTER COLUMN `id` COMMENT 'new'"
+change 2: alter_column destructive=false table=`prod`.`silver`.`orders`
+  describe: alter column "id" nullable true → false
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ALTER COLUMN `id` SET NOT NULL"
+change 3: alter_column destructive=false table=`prod`.`silver`.`orders`
+  describe: alter column "name" nullable false → true
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ALTER COLUMN `name` DROP NOT NULL"
+diags: none
+== type change not supported
+changes: none
+diag: error|table "silver.orders", column "id": changing the type from BIGINT to INT is not supported in v1 (only varchar(n)/char(n) to STRING); type widening is planned for v2|tables/silver/orders.yml
+== type change supported and not supported
+changes: none
+diag: error|table "silver.orders", column "id": changing the type from BIGINT to INT is not supported in v1 (only varchar(n)/char(n) to STRING); type widening is planned for v2|tables/silver/orders.yml
+== drop column
+change 0: drop_column destructive=true table=`prod`.`silver`.`orders`
+  describe: drop column "name"
+  sql: "ALTER TABLE `prod`.`silver`.`orders` DROP COLUMN `name`"
+diags: none
+== rename column with alter
+change 0: rename_column destructive=false table=`prod`.`silver`.`orders`
+  describe: rename column "name" → "title"
+  sql: "ALTER TABLE `prod`.`silver`.`orders` RENAME COLUMN `name` TO `title`"
+change 1: alter_column destructive=false table=`prod`.`silver`.`orders`
+  describe: alter column "title" type varchar(10) → STRING
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ALTER COLUMN `title` TYPE STRING"
+change 2: alter_column destructive=false table=`prod`.`silver`.`orders`
+  describe: alter column "title" comment → "t"
+  sql: "ALTER TABLE `prod`.`silver`.`orders` ALTER COLUMN `title` COMMENT 't'"
+diags: none
+== rename column with type change not supported
+changes: none
+diag: error|table "silver.orders", column "title": changing the type from STRING to VARCHAR_X is not supported in v1 (only varchar(n)/char(n) to STRING); type widening is planned for v2|tables/silver/orders.yml
+== rename column already applied
+changes: none
+diag: warning|table "silver.orders": column "name": rename_from "old" can be removed after apply|tables/silver/orders.yml
+== rename column typo
+changes: none
+diag: error|table "silver.orders": column "title": rename_from "nmae" not found in the UC table and "title" does not exist yet; fix the name or remove rename_from to add "title" as a new column|tables/silver/orders.yml
+== rename column target exists
+changes: none
+diag: error|table "silver.orders": column "id": cannot rename "name" to "id": column "id" already exists in the UC table|tables/silver/orders.yml
+== rename column source also defined
+changes: none
+diag: error|table "silver.orders": column "name" is both defined and the rename source of column "z" in the same plan; use distinct names|tables/silver/orders.yml
+== rename column case only
+changes: none
+diags: none
+== rename column errors plus new not null
+changes: none
+diag: error|table "silver.orders": column "b": rename_from "nope" not found in the UC table and "b" does not exist yet; fix the name or remove rename_from to add "b" as a new column|tables/silver/orders.yml
+== rename table
+change 0: rename_table destructive=false table=`prod`.`silver`.`orders`
+  describe: rename table orders → orders_v2
+  sql: "ALTER TABLE `prod`.`silver`.`orders` RENAME TO `prod`.`silver`.`orders_v2`"
+diags: none
+== rename table plus column plus comment
+change 0: rename_table destructive=false table=`prod`.`silver`.`orders`
+  describe: rename table orders → orders_v2
+  sql: "ALTER TABLE `prod`.`silver`.`orders` RENAME TO `prod`.`silver`.`orders_v2`"
+change 1: rename_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: rename column "name" → "nm"
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` RENAME COLUMN `name` TO `nm`"
+change 2: add_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: add column "x" INT
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` ADD COLUMN `x` INT"
+change 3: alter_table_comment destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: set comment "c"
+  sql: "COMMENT ON TABLE `prod`.`silver`.`orders_v2` IS 'c'"
+diags: none
+== rename table live in other catalog
+change 0: rename_table destructive=false table=`old_cat`.`silver`.`orders`
+  describe: rename table orders → orders_v2
+  sql: "ALTER TABLE `old_cat`.`silver`.`orders` RENAME TO `old_cat`.`silver`.`orders_v2`"
+diags: none
+== clustering none to columns
+change 0: alter_clustering destructive=false table=`prod`.`silver`.`orders`
+  describe: set clustering by (id)
+  sql: "ALTER TABLE `prod`.`silver`.`orders` CLUSTER BY (`id`)"
+diags: none
+== clustering columns to none
+change 0: alter_clustering destructive=false table=`prod`.`silver`.`orders`
+  describe: drop clustering
+  sql: "ALTER TABLE `prod`.`silver`.`orders` CLUSTER BY NONE"
+diags: none
+== clustering columns to auto
+change 0: alter_clustering destructive=false table=`prod`.`silver`.`orders`
+  describe: set clustering auto
+  sql: "ALTER TABLE `prod`.`silver`.`orders` CLUSTER BY AUTO"
+diags: none
+== clustering same set other order and case
+changes: none
+diags: none
+== clustering keep nested
+changes: none
+diags: none
+== clustering nested replaced by columns
+change 0: alter_clustering destructive=false table=`prod`.`silver`.`orders`
+  describe: set clustering by (id)
+  sql: "ALTER TABLE `prod`.`silver`.`orders` CLUSTER BY (`id`)"
+diags: none
+== partitioning change warning
+changes: none
+diag: warning|table "silver.orders": partitioning cannot be changed after creation; ignoring|tables/silver/orders.yml
+== partitioning removed warning
+changes: none
+diag: warning|table "silver.orders": partitioning cannot be changed after creation; ignoring|tables/silver/orders.yml
+== partitioning same case-insensitive
+changes: none
+diags: none
+== tblproperties set update unset system ignored
+change 0: set_tbl_properties destructive=false table=`prod`.`silver`.`orders`
+  describe: set 2 tblproperties
+  sql: "ALTER TABLE `prod`.`silver`.`orders` SET TBLPROPERTIES ('changed'='b', 'new'='1')"
+change 1: unset_tbl_properties destructive=false table=`prod`.`silver`.`orders`
+  describe: unset 2 tblproperties
+  sql: "ALTER TABLE `prod`.`silver`.`orders` UNSET TBLPROPERTIES ('unset_a', 'unset_b')"
+diags: none
+== tblproperties live nil value
+change 0: set_tbl_properties destructive=false table=`prod`.`silver`.`orders`
+  describe: set 1 tblproperties
+  sql: "ALTER TABLE `prod`.`silver`.`orders` SET TBLPROPERTIES ('k'='v')"
+diags: none
+== table comment set
+change 0: alter_table_comment destructive=false table=`prod`.`silver`.`orders`
+  describe: set comment "it's new"
+  sql: "COMMENT ON TABLE `prod`.`silver`.`orders` IS 'it\\'s new'"
+diags: none
+== table comment unset
+change 0: alter_table_comment destructive=false table=`prod`.`silver`.`orders`
+  describe: unset comment
+  sql: "COMMENT ON TABLE `prod`.`silver`.`orders` IS NULL"
+diags: none
+== new not null column
+changes: none
+diag: error|table "silver.orders", column "req": a new NOT NULL column cannot be added to an existing table (not supported in v1): add it as nullable, fill it with data, then set nullable: false|tables/silver/orders.yml
+diag: error|table "silver.orders", column "req2": a new NOT NULL column cannot be added to an existing table (not supported in v1): add it as nullable, fill it with data, then set nullable: false|tables/silver/orders.yml
+== type normalization spaces and case
+changes: none
+diag: error|table "silver.orders", column "c": changing the type from struct<`x  y`:int> to STRUCT<`x y`: INT> is not supported in v1 (only varchar(n)/char(n) to STRING); type widening is planned for v2|tables/silver/orders.yml
+diag: error|table "silver.orders", column "d": changing the type from decimal(10,3) to DECIMAL(10, 2) is not supported in v1 (only varchar(n)/char(n) to STRING); type widening is planned for v2|tables/silver/orders.yml
+== column names case-insensitive
+changes: none
+diags: none
+== rename column target exists and source also defined
+changes: none
+diag: error|table "silver.orders": column "id": cannot rename "name" to "id": column "id" already exists in the UC table|tables/silver/orders.yml
+== everything at once
+change 0: rename_table destructive=false table=`prod`.`silver`.`orders`
+  describe: rename table orders → orders_v2
+  sql: "ALTER TABLE `prod`.`silver`.`orders` RENAME TO `prod`.`silver`.`orders_v2`"
+change 1: rename_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: rename column "name" → "title"
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` RENAME COLUMN `name` TO `title`"
+change 2: alter_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: alter column "title" comment → "t"
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` ALTER COLUMN `title` COMMENT 't'"
+change 3: alter_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: alter column "id" type varchar(10) → STRING
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` ALTER COLUMN `id` TYPE STRING"
+change 4: alter_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: alter column "id" nullable true → false
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` ALTER COLUMN `id` SET NOT NULL"
+change 5: add_column destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: add column "added" DATE
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` ADD COLUMN `added` DATE COMMENT 'a'"
+change 6: drop_column destructive=true table=`prod`.`silver`.`orders_v2`
+  describe: drop column "gone2"
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` DROP COLUMN `gone2`"
+change 7: drop_column destructive=true table=`prod`.`silver`.`orders_v2`
+  describe: drop column "gone1"
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` DROP COLUMN `gone1`"
+change 8: set_tbl_properties destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: set 2 tblproperties
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` SET TBLPROPERTIES ('s1'='1', 's2'='2')"
+change 9: unset_tbl_properties destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: unset 2 tblproperties
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` UNSET TBLPROPERTIES ('u0', 'u1')"
+change 10: alter_clustering destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: set clustering by (id, title)
+  sql: "ALTER TABLE `prod`.`silver`.`orders_v2` CLUSTER BY (`id`, `title`)"
+change 11: alter_table_comment destructive=false table=`prod`.`silver`.`orders_v2`
+  describe: set comment "new comment"
+  sql: "COMMENT ON TABLE `prod`.`silver`.`orders_v2` IS 'new comment'"
+diag: warning|table "silver.orders_v2": partitioning cannot be changed after creation; ignoring|tables/silver/orders_v2.yml

@@ -1,0 +1,5 @@
+name: main
+uc_name: main              # overridden per target, see targets/*.yml.example
+schemas:
+  shop:
+    uc_name: shop          # this schema must exist in Unity Catalog: ucat does not create schemas

@@ -1,0 +1,70 @@
+== c01
+error|unknown schema ref "nope": not defined in any catalog config|tables/silver/t.yml
+== c02
+error|duplicate table "t" in prod.silver: also defined in tables/silver/t.yml|tables/silver/t2.yml
+== c03
+error|table "t": clustering and partitioning are mutually exclusive|tables/silver/t.yml
+== c04
+error|table "t": clustering.auto and clustering.columns are mutually exclusive|tables/silver/t.yml
+== c05
+error|table name is required|tables/silver/.yml
+== c06
+error|table "t": column name is required|tables/silver/t.yml
+== c07a
+error|table "t", column "a": type "VARCHAR(10)" is not supported; supported types: BIGINT, BINARY, BOOLEAN, DATE, DOUBLE, FLOAT, INT, SMALLINT, STRING, TIMESTAMP, TIMESTAMP_NTZ, TINYINT, VARIANT, ARRAY<...>, DECIMAL[(p,s)], GEOGRAPHY(...), GEOMETRY(...), INTERVAL ..., MAP<...>, STRUCT<...>|tables/silver/t.yml
+== c07b
+error|table "t", column "a": type "BIG INT" is not supported: whitespace inside a word|tables/silver/t.yml
+== c08
+warning|table rename_from "t" is same as name; no rename will occur|tables/silver/t.yml
+== c09
+error|table name is required|tables/silver/.yml
+error|rename_from set but table name is empty|tables/silver/.yml
+== c10
+warning|table "t", column "Id": rename_from is same as name; no rename will occur|tables/silver/t.yml
+== c11
+warning|table "a.b c": name contains a dot or whitespace|tables/silver/a.b c.yml
+== c12
+error|rename_from "old" is used by both table "n1" and table "n2"|tables/silver/n2.yml
+== c13
+warning|table "t", column "a b": name contains a dot or whitespace|tables/silver/t.yml
+warning|table "t", column "c.d": name contains a dot or whitespace|tables/silver/t.yml
+== c14
+error|table "a": rename_from "b" refers to a table that is also defined in tables/silver/b.yml; remove one of them|tables/silver/a.yml
+error|table "b": rename_from "a" refers to a table that is also defined in tables/silver/a.yml; remove one of them|tables/silver/b.yml
+== c15
+error|table "t": duplicate column "A" (column names are case-insensitive)|tables/silver/t.yml
+== c16
+error|table name "Orders" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/Orders.yml
+error|table "Orders": rename_from "OldOrders" must be lowercase: Unity Catalog stores table names in lowercase|tables/silver/Orders.yml
+== c17
+error|catalog "Prod" must be lowercase: Unity Catalog stores catalog names in lowercase|catalog:main
+error|schema "Silver" must be lowercase: Unity Catalog stores schema names in lowercase|schema:main.silver
+== c18
+error|table "t": clustering must set columns or auto: true (to disable clustering, remove the block)|tables/silver/t.yml
+== c19
+error|table "t": rename_from "X" is used by both column "a" and column "b"|tables/silver/t.yml
+error|table "t": column "c": rename_from "d" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/t.yml
+error|table "t": column "d": rename_from "c" refers to a column which is also renamed; chain and swap renames are not supported|tables/silver/t.yml
+== c20
+error|catalog name is empty|catalogs/empty.yml
+== c21a
+error|logical schema "silver" is defined in both catalog "common" (catalogs/common.yml) and catalog "main" (catalogs/main.yml); a table references a schema by logical name only|schema:silver
+== c21b
+error|logical schema "silver" is defined in all of catalog "a" (catalogs/a.yml), catalog "b" (catalog:b) and catalog "c" (catalogs/c.yml); a table references a schema by logical name only|schema:silver
+== c22a
+error|catalog "main": uc_name is not set (set it in the catalog file or override it in the target)|catalogs/main.yml
+== c22b
+== c23a
+error|schemas "a" (catalogs/main.yml) and "b" (catalogs/main.yml) both resolve to physical schema prod.s; each logical schema must map to its own physical schema|schema:a
+== c23b
+error|schemas "a" (catalogs/main.yml), "b" (catalogs/main.yml) and "c" (catalog:other) all resolve to physical schema prod.s; each logical schema must map to its own physical schema|schema:a
+== c24
+error|table "t": drop: true cannot be combined with rename_from (remove rename_from)|tables/silver/t.yml
+== c25
+error|table "t": clustering column "zzz" is not defined in columns|tables/silver/t.yml
+== c26
+error|logical catalog names "MAIN" (catalogs/MAIN.yml) and "main" (catalogs/main.yml) differ only in case|catalog:MAIN
+error|logical schema names "Silver" (catalogs/MAIN.yml) and "silver" (catalogs/main.yml) differ only in case|schema:Silver
+== c27
+error|table "t": columns is required|tables/silver/t.yml
+== c28-ok

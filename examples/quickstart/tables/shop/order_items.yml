@@ -1,0 +1,15 @@
+name: order_items
+schema: shop
+comment: "Lines of an order"
+columns:
+  - name: order_id
+    type: BIGINT
+    nullable: false
+  - name: product
+    type: STRING
+  - name: quantity
+    type: INT
+  - name: price
+    type: DECIMAL(18,2)
+clustering:
+  columns: [order_id]

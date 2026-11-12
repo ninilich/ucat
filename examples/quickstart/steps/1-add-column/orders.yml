@@ -1,0 +1,25 @@
+name: orders
+schema: shop
+comment: "Orders placed in the shop"
+columns:
+  - name: id
+    type: BIGINT
+    nullable: false
+    comment: "Primary key"
+  - name: customer_id
+    type: BIGINT
+    nullable: false
+  - name: status
+    type: STRING
+    comment: "new, paid or shipped"
+  - name: amount
+    type: DECIMAL(18,2)
+  - name: discount
+    type: DECIMAL(5,2)
+    comment: "Percent off the amount"
+  - name: created_at
+    type: TIMESTAMP
+clustering:
+  columns: [customer_id]
+tblproperties:
+  delta.enableChangeDataFeed: "true"

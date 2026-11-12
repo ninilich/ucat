@@ -1,0 +1,39 @@
+== ucat validate
+-- exit code
+0
+-- stdout
+| ✓ all local checks passed
+-- stderr
+| warning: table rename_from "a" is same as name; no rename will occur (tables/silver/a_same.yml)
+| warning: table "a", column "name": rename_from is same as name; no rename will occur (tables/silver/a_same.yml)
+| warning: table "with.dot": name contains a dot or whitespace (tables/silver/b_dot.yml)
+| warning: table "c", column "a b": name contains a dot or whitespace (tables/silver/c_cols.yml)
+== ucat validate -t dev
+-- exit code
+0
+-- stdout
+| ✓ all local checks passed
+| ✓ schema dev.gold exists
+| ✓ schema dev.silver exists
+| ✓ warehouse wh1 reachable
+-- stderr
+| warning: table rename_from "a" is same as name; no rename will occur (tables/silver/a_same.yml)
+| warning: table "a", column "name": rename_from is same as name; no rename will occur (tables/silver/a_same.yml)
+| warning: table "with.dot": name contains a dot or whitespace (tables/silver/b_dot.yml)
+| warning: table "c", column "a b": name contains a dot or whitespace (tables/silver/c_cols.yml)
+== ucat plan -t dev
+-- exit code
+0
+-- stdout
+|   `dev`.`silver`.`with.dot`
+|     + create table `dev`.`silver`.`with.dot` (1 column)
+| 
+|   `dev`.`silver`.`c`
+|     + create table `dev`.`silver`.`c` (1 column)
+| 
+| Plan: 2 to add, 0 to change, 0 to destroy.
+-- stderr
+| warning: table rename_from "a" is same as name; no rename will occur (tables/silver/a_same.yml)
+| warning: table "a", column "name": rename_from is same as name; no rename will occur (tables/silver/a_same.yml)
+| warning: table "with.dot": name contains a dot or whitespace (tables/silver/b_dot.yml)
+| warning: table "c", column "a b": name contains a dot or whitespace (tables/silver/c_cols.yml)

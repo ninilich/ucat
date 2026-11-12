@@ -1,0 +1,24 @@
+-- stdin
+"proj\nmain\nsilver\nsilver\ndev,prod\n\n\n\n\n\n\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+| Target names (comma-separated) [dev]: 
+| Workspace host for 'dev': 
+| UC catalog name for target 'dev' [main_dev]: 
+| SQL warehouse ID for target 'dev' (from Databricks UI > SQL Warehouses, optional): 
+| Workspace host for 'prod': 
+| UC catalog name for target 'prod' [main_prod]: 
+| SQL warehouse ID for target 'prod' (from Databricks UI > SQL Warehouses, optional): 
+-- stderr
+| Error: file already exists: targets/prod.yml
+-- files
+targets/
+targets/prod.yml
+-- content targets/prod.yml
+| x
+\ no newline at end

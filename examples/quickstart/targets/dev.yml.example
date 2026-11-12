@@ -1,0 +1,7 @@
+# Copy to targets/dev.yml and fill in your values (targets/dev.yml is ignored by git).
+workspace:
+  host: https://your-workspace.cloud.databricks.com
+  warehouse_id: your-warehouse-id
+catalogs:
+  main:
+    uc_name: your_catalog          # an existing catalog where you may create tables

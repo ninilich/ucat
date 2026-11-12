@@ -1,0 +1,14 @@
+-- stdin
+"proj\nmain\nsilver\nsilver\ndev,a/b\n"
+-- exit code
+1
+-- stdout
+| Project name: 
+| Logical catalog name [main]: 
+| Logical schema name: 
+| UC schema name [silver]: 
+| Target names (comma-separated) [dev]: 
+-- stderr
+| Error: target name "a/b" must contain only letters, digits, underscores and hyphens (at most 100 characters) and must not be a reserved Windows name
+-- files
+(none)

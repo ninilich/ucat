@@ -1,0 +1,9 @@
+workspace:
+  host: https://dev.azuredatabricks.net
+  warehouse_id: abc123dev
+catalogs:
+  main:
+    uc_name: dev
+    schemas:
+      silver:
+        uc_name: silver_dev

@@ -1,0 +1,57 @@
+== ucat validate
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| warning: table "with.dot": name contains a dot or whitespace (tables/gold/a_dot.yml)
+| error: table "swap_a": rename_from "swap_b" refers to a table that is also defined in tables/gold/c_swap_b.yml; remove one of them (tables/gold/b_swap_a.yml)
+| error: table "swap_b": rename_from "swap_a" refers to a table that is also defined in tables/gold/b_swap_a.yml; remove one of them (tables/gold/c_swap_b.yml)
+| error: rename_from "shared" is used by both table "r1" and table "r2" (tables/gold/e_rn2.yml)
+| error: table name "Upper" must be lowercase: Unity Catalog stores table names in lowercase (tables/silver/b_upper.yml)
+| error: table "Upper": rename_from "OldUpper" must be lowercase: Unity Catalog stores table names in lowercase (tables/silver/b_upper.yml)
+| error: unknown schema ref "nowhere": not defined in any catalog config (tables/silver/c_noschema.yml)
+| error: table "both": clustering and partitioning are mutually exclusive (tables/silver/d_cl.yml)
+| error: table "both": clustering column "nope" is not defined in columns (tables/silver/d_cl.yml)
+| error: table "both": partitioning column "gone" is not defined in columns (tables/silver/d_cl.yml)
+| error: table "nocols": columns is required (tables/silver/e_nocols.yml)
+| error: table "dropped": drop: true cannot be combined with rename_from (remove rename_from) (tables/silver/f_drop.yml)
+| Error: local validation failed
+== ucat validate -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| warning: table "with.dot": name contains a dot or whitespace (tables/gold/a_dot.yml)
+| error: table "swap_a": rename_from "swap_b" refers to a table that is also defined in tables/gold/c_swap_b.yml; remove one of them (tables/gold/b_swap_a.yml)
+| error: table "swap_b": rename_from "swap_a" refers to a table that is also defined in tables/gold/b_swap_a.yml; remove one of them (tables/gold/c_swap_b.yml)
+| error: rename_from "shared" is used by both table "r1" and table "r2" (tables/gold/e_rn2.yml)
+| error: table name "Upper" must be lowercase: Unity Catalog stores table names in lowercase (tables/silver/b_upper.yml)
+| error: table "Upper": rename_from "OldUpper" must be lowercase: Unity Catalog stores table names in lowercase (tables/silver/b_upper.yml)
+| error: unknown schema ref "nowhere": not defined in any catalog config (tables/silver/c_noschema.yml)
+| error: table "both": clustering and partitioning are mutually exclusive (tables/silver/d_cl.yml)
+| error: table "both": clustering column "nope" is not defined in columns (tables/silver/d_cl.yml)
+| error: table "both": partitioning column "gone" is not defined in columns (tables/silver/d_cl.yml)
+| error: table "nocols": columns is required (tables/silver/e_nocols.yml)
+| error: table "dropped": drop: true cannot be combined with rename_from (remove rename_from) (tables/silver/f_drop.yml)
+| Error: local validation failed
+== ucat plan -t dev
+-- exit code
+1
+-- stdout
+(empty)
+-- stderr
+| warning: table "with.dot": name contains a dot or whitespace (tables/gold/a_dot.yml)
+| error: table "swap_a": rename_from "swap_b" refers to a table that is also defined in tables/gold/c_swap_b.yml; remove one of them (tables/gold/b_swap_a.yml)
+| error: table "swap_b": rename_from "swap_a" refers to a table that is also defined in tables/gold/b_swap_a.yml; remove one of them (tables/gold/c_swap_b.yml)
+| error: rename_from "shared" is used by both table "r1" and table "r2" (tables/gold/e_rn2.yml)
+| error: table name "Upper" must be lowercase: Unity Catalog stores table names in lowercase (tables/silver/b_upper.yml)
+| error: table "Upper": rename_from "OldUpper" must be lowercase: Unity Catalog stores table names in lowercase (tables/silver/b_upper.yml)
+| error: unknown schema ref "nowhere": not defined in any catalog config (tables/silver/c_noschema.yml)
+| error: table "both": clustering and partitioning are mutually exclusive (tables/silver/d_cl.yml)
+| error: table "both": clustering column "nope" is not defined in columns (tables/silver/d_cl.yml)
+| error: table "both": partitioning column "gone" is not defined in columns (tables/silver/d_cl.yml)
+| error: table "nocols": columns is required (tables/silver/e_nocols.yml)
+| error: table "dropped": drop: true cannot be combined with rename_from (remove rename_from) (tables/silver/f_drop.yml)
+| Error: local validation failed
