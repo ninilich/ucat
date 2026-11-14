@@ -15,6 +15,7 @@
   function show() {
     var id = '';
     try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
+    if (id === 'compare-table') { id = 'compare'; } // the matrix tab of the comparison
     var panel = panels.filter(function (p) { return p.id === id; })[0] || panels[0];
     panels.forEach(function (p) { p.classList.toggle('active', p === panel); });
     links.forEach(function (a) {
@@ -118,4 +119,57 @@
   window.addEventListener('resize', hide);
   window.addEventListener('hashchange', hide);
   window.addEventListener('scroll', place, true);
+})();
+
+/* comparison tabs: the map and the matrix. #compare opens the map, #compare-table the matrix. */
+(function () {
+  var tabs = [].slice.call(document.querySelectorAll('[role="tab"][data-view]'));
+  if (!tabs.length) { return; }
+
+  function select(name, focus, remember) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-view') === name;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      if (on && focus) { t.focus(); }
+    });
+    if (remember) {
+      try { history.replaceState(null, '', name === 'table' ? '#compare-table' : '#compare'); } catch (e) {}
+    }
+  }
+  function fromHash() { select(location.hash === '#compare-table' ? 'table' : 'fit', false, false); }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { select(t.getAttribute('data-view'), false, true); });
+    t.addEventListener('keydown', function (e) {
+      var to = -1;
+      if (e.key === 'ArrowRight') { to = (i + 1) % tabs.length; }
+      else if (e.key === 'ArrowLeft') { to = (i + tabs.length - 1) % tabs.length; }
+      else if (e.key === 'Home') { to = 0; }
+      else if (e.key === 'End') { to = tabs.length - 1; }
+      if (to < 0) { return; }
+      e.preventDefault();
+      select(tabs[to].getAttribute('data-view'), true, true);
+    });
+  });
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+
+/* map: show why a tool sits where it does, on hover, focus and tap */
+(function () {
+  var out = document.getElementById('mp-why');
+  var tools = [].slice.call(document.querySelectorAll('.mp-t[data-why]'));
+  if (!out || !tools.length) { return; }
+  var rest = out.textContent;
+
+  function say(t) { out.textContent = t ? t.getAttribute('data-why') : rest; }
+  tools.forEach(function (t) {
+    t.addEventListener('mouseenter', function () { say(t); });
+    t.addEventListener('mouseleave', function () { say(document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('mp-t') ? document.activeElement : null); });
+    t.addEventListener('focus', function () { say(t); });
+    t.addEventListener('blur', function () { say(null); });
+    t.addEventListener('click', function () { say(t); });
+  });
 })();

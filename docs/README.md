@@ -17,7 +17,7 @@
 - [CI/CD](ci-cd.md)
 - [Troubleshooting](troubleshooting.md)
 - [FAQ](faq.md)
-- [Comparison](https://ninilich.github.io/ucat/#compare): Terraform, Declarative Automation Bundles (formerly Databricks Asset Bundles), dbt, notebooks
+- [Comparison](https://ucat.dev/#compare): Terraform, Declarative Automation Bundles (formerly Databricks Asset Bundles), dbt, Liquibase, notebooks
 
 **Limits and project**
 

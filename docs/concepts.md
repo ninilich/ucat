@@ -36,6 +36,25 @@ v1 manages **managed tables** in existing schemas. See [Limitations](limitations
 - **The order of columns is not managed.** If the YAML and the table list the columns in a different order, `plan` shows
   no change. A new column is added at the end of the table, whatever its place in the YAML. ucat does not reorder columns.
 
+## Who owns a table
+
+A table can be owned by the code that fills it or by its own definition. ucat is for the second kind.
+
+| | Owned by a pipeline (streaming table, materialized view) | Owned by its definition (ucat) |
+|---|---|---|
+| Who defines the schema | The query in the pipeline | The YAML file |
+| Who creates and changes it | The pipeline | ucat, from CI |
+| Who fills it | The same pipeline | Any job, pipeline or notebook |
+| Where the definition lives | In the pipeline code | A table file in git, reviewed in a pull request like a contract |
+
+In a pipeline (Lakeflow Spark Declarative Pipelines, formerly Delta Live Tables) the table is a product of the code:
+it lives and changes with it. With ucat the table comes first, and the jobs, pipelines and notebooks that fill it are
+just the ones that write into it.
+
+"Contract" here describes the process: a change of the schema goes through a pull request like any other change.
+ucat does not write data into the table and does not check the quality of the data. See also
+[Limitations](limitations.md).
+
 ## One table, one file
 
 One YAML file per table, kept in git next to your code. The file name and the directory layout are conventions; ucat
@@ -63,6 +82,22 @@ The environment is fully defined by the target. There is no "promote" command: e
 A rename is a hint, not a guess. Without a hint, a column that disappeared from the YAML is a **drop** and a new one is
 an **add**. With `rename_from: old_name` ucat runs `RENAME COLUMN` (or `RENAME TO` for a table). After the apply, the
 source no longer exists in Unity Catalog and `plan` tells you the hint can be removed. ucat never edits your YAML.
+
+`rename_from` is an ordinary field, not a comment to add and take away. It is safe to leave it in while you apply to
+several environments, because ucat looks at each environment on its own:
+
+| In Unity Catalog of this target | What `plan` does |
+|---|---|
+| Only the old name exists | renames it |
+| Only the new name exists (already renamed) | warns that `rename_from` can be removed |
+| Both exist | table: ignores the hint and warns; column: planning error |
+| Neither exists | table: warns and creates the table; column: planning error |
+
+Remove the hint only when `plan` says "can be removed" for **every** target (`dev`, `test`, `prod`). ucat does not
+know which environments were already renamed. If you remove it before a lagging environment is renamed, that
+environment no longer sees a rename: for a table it plans a `create` of a new empty table and leaves the old one with its
+data unmanaged; for a column it plans an `add` of the new column and a `drop` of the old one, which loses the data of
+that column (it needs column mapping and your `yes`).
 
 Renaming or dropping a column needs `delta.columnMapping.mode: name` on the table. Preflight checks refuse the plan
 otherwise. Turning column mapping on upgrades the table protocol (older readers can no longer read the table), so ucat never turns it on by

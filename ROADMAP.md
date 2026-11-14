@@ -45,4 +45,5 @@ The scope of v2 may change. Not in order of priority.
 - **Streaming tables and materialized views.** A streaming table is defined in the source code of a pipeline and is
   owned and updated by that one pipeline; a materialized view is likewise defined by a query and refreshed by
   Databricks. Their lifecycle belongs to the pipeline, not to a table definition in YAML, so they are deployed with the
-  pipeline (for example with Declarative Automation Bundles). ucat is for the tables you define yourself.
+  pipeline (for example with Declarative Automation Bundles). ucat is for the tables you define yourself: see
+  [Who owns a table](docs/concepts.md#who-owns-a-table).

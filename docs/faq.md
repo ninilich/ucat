@@ -3,7 +3,29 @@
 ## Why not just use Terraform?
 
 You can, and the two work well together: Terraform for catalogs, schemas, grants and warehouses, ucat for the tables
-inside them. ucat has no state file and shows the SQL it will run. See the [comparison](https://ninilich.github.io/ucat/#compare).
+inside them. ucat has no state file and shows the SQL it will run. See the [comparison](https://ucat.dev/#compare).
+
+## Why not Liquibase?
+
+Liquibase runs versioned migrations: you write each change as a changeset and every database keeps a history of what was
+applied. That fits migrations of data, a fixed order of changes and many kinds of databases. ucat is declarative: the
+YAML is the table as it should be, `plan` compares it with Unity Catalog and works out the ALTER statements, so a change
+made by hand shows up in the next plan. There is no history table; git and the plan are the record. Use Liquibase if you
+need migrations of data or one tool for several databases; use ucat if you want to read the whole table in one file
+and review the SQL of a change in a pull request. See the [comparison](https://ucat.dev/#compare).
+
+## Why not define tables in a pipeline?
+
+In a Lakeflow pipeline (Spark Declarative Pipelines, formerly Delta Live Tables) the pipeline owns its tables: the schema
+comes from the query, and the table is created and refreshed with that code. That is the right model for streaming tables
+and materialized views. ucat is for the other kind: a table that has its own definition, a file in git that you review
+like a contract, and that any job, pipeline or notebook can write into. See
+[Who owns a table](concepts.md#who-owns-a-table).
+
+## Does ucat replace Lakeflow?
+
+No. Pipelines stay the place for streaming tables and materialized views, which ucat does not manage. ucat is for the
+tables you define yourself, for example the tables your jobs load data into. The two work side by side.
 
 ## Someone changed a table by hand. What happens?
 

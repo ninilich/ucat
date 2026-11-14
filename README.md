@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://ninilich.github.io/ucat/">
+  <a href="https://ucat.dev/">
     <img src="docs/assets/ucat-header.png" width="280" alt="ucat">
   </a>
 </p>
@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://ninilich.github.io/ucat/">Website</a> ·
+  <a href="https://ucat.dev/">Website</a> ·
   <a href="docs/getting-started.md">Getting started</a> ·
   <a href="docs/README.md">Documentation</a> ·
   <a href="ROADMAP.md">Roadmap</a> ·
@@ -19,7 +19,7 @@
 
 **ucat** keeps your Databricks managed table definitions in git as YAML, compares them with what is really in Unity Catalog,
 shows exactly what would change, and applies it from CI. The same definitions go to dev, test and prod, one target at a
-time. No state file.
+time, and each target can point to its own workspace. No state file.
 
 ```
 $ ucat plan -t dev
@@ -35,8 +35,9 @@ $ ucat apply -t dev
 Apply complete in 2.3s.
 ```
 
-Why **ucat**, how it works, and how it compares with Terraform, Bundles, dbt and notebooks:
-[the website](https://ninilich.github.io/ucat/).
+Why **ucat**, how it works, and how it compares with Terraform, Bundles, dbt, Liquibase and notebooks (see also
+[Why not Liquibase?](docs/faq.md#why-not-liquibase)):
+[the website](https://ucat.dev/).
 
 ## Quickstart
 
@@ -61,12 +62,22 @@ More: [Getting started](docs/getting-started.md), [the quickstart example](examp
 
 ## Install
 
-Not released yet. The first release will ship binaries for Linux, macOS and Windows on GitHub Releases. For now, from
-source (Go 1.26 or newer):
+With Homebrew (macOS and Linux):
+
+```bash
+brew install ninilich/ucat/ucat
+```
+
+Or download the binary for Linux, macOS (amd64, arm64) or Windows (amd64) from
+[GitHub Releases](https://github.com/ninilich/ucat/releases). Every release has a `checksums.txt` signed with cosign.
+
+Or build it from source (Go 1.26 or newer):
 
 ```bash
 go install github.com/ninilich/ucat@latest
 ```
+
+Check it with `ucat version`.
 
 ## Documentation
 

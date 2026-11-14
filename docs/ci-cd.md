@@ -68,7 +68,8 @@ jobs:
       - run: ucat apply -t prod --auto-approve
 ```
 
-The example pins ucat to `v1.0.0`; adjust the version, the names and the paths to your project. The `prod` environment
+The example builds ucat at the pinned version `v1.0.0` with Go. You can also download the binary of that release from
+[GitHub Releases](https://github.com/ninilich/ucat/releases). Adjust the version, the names and the paths to your project. The `prod` environment
 can hold an approval rule, a manual gate before `apply`. `plan` and `apply` use different environments, each with its
 own secrets (the same names, different values), so `plan` runs as a read-only service principal: see the next section.
 

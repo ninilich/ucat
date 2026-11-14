@@ -11,14 +11,29 @@ step, use [the quickstart example](../examples/quickstart/README.md).
 | A SQL warehouse (a serverless 2X-Small is enough) | `apply` and `drop` run SQL on it; `plan`, `pull` and `validate` need none |
 | `USE CATALOG`, `USE SCHEMA`, `CREATE TABLE`, `MODIFY` on the target schema, and `CAN USE` on the warehouse | see [Authentication and permissions](authentication.md) |
 | The Databricks CLI, for the interactive login | `databricks auth login`. In CI use a token or service principal variables: no CLI needed |
-| Go 1.26 or newer | only to install with `go install` |
+| Go 1.26 or newer | only to build from source with `go install` |
 
 ## 1. Install
 
-The first release will ship binaries on GitHub Releases. Until then, from source (Go 1.26 or newer):
+With Homebrew (macOS and Linux):
+
+```bash
+brew install ninilich/ucat/ucat
+```
+
+Or download the binary for Linux, macOS (amd64, arm64) or Windows (amd64) from
+[GitHub Releases](https://github.com/ninilich/ucat/releases) and put it on your `PATH`. Every release has a
+`checksums.txt` with a cosign signature (`checksums.txt.sigstore.json`).
+
+Or build it from source (Go 1.26 or newer):
 
 ```bash
 go install github.com/ninilich/ucat@latest
+```
+
+Check the install:
+
+```bash
 ucat version
 ```
 

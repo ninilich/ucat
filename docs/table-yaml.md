@@ -5,7 +5,6 @@ file under `tables_dir`, and the table is identified by `schema` and `name` insi
 
 ```yaml
 name: orders
-# rename_from: orders_old          # rename the table; remove after apply
 schema: silver                      # logical schema name, declared in catalogs/*.yml
 comment: "Raw orders from the source system"
 
@@ -20,7 +19,6 @@ columns:
   - name: amount
     type: DECIMAL(18,2)
   - name: status
-    # rename_from: order_status     # rename the column; remove after apply
     type: STRING
   - name: items
     type: ARRAY<STRUCT<product_id:BIGINT,qty:INT>>
@@ -118,7 +116,8 @@ columns:
 ```
 
 `rename_from` works inside one schema. Renaming or dropping a column needs `delta.columnMapping.mode: name`. After a
-successful `apply` the old name is gone, and `plan` warns that the hint can be removed. ucat never edits YAML.
+successful `apply` the old name is gone, and `plan` warns that the hint can be removed. ucat never edits YAML. When it is
+safe to remove the hint: [Renames](concepts.md#renames).
 
 ### Deleting a table
 
