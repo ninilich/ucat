@@ -111,6 +111,28 @@ func TestValidateLocal_tableNameRequired(t *testing.T) {
 	assert.True(t, diags.HasError())
 }
 
+func TestValidateLocal_tableNameRequired_onlyOneError(t *testing.T) {
+	// When table name is missing, only the "table name is required" error
+	// should be reported. Follow-on checks (schema ref, columns required)
+	// should be skipped because they depend on the name.
+	tbl := resolvedTable("")
+	tbl.Name = ""
+	tbl.Schema = "nonexistent" // would trigger "unknown schema ref" if checked
+	tbl.Columns = []config.Column{} // would trigger "columns is required" if checked
+	diags := config.ValidateLocal(resolvedConfig([]config.Table{tbl}))
+
+	require.True(t, diags.HasError())
+	errorCount := 0
+	for _, d := range diags {
+		if d.Severity == diag.Error {
+			errorCount++
+			assert.Contains(t, d.Summary, "table name is required",
+				"expected only 'table name is required' error, got: %s", d.Summary)
+		}
+	}
+	assert.Equal(t, 1, errorCount, "should report exactly one error for empty table name")
+}
+
 func TestValidateLocal_columnNameRequired(t *testing.T) {
 	tbl := resolvedTable("orders")
 	tbl.Columns = []config.Column{{Name: "", Type: typSTRING}}

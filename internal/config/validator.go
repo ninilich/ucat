@@ -646,12 +646,18 @@ func (v *validation) checkTable(table Table) {
 	loc := tableLoc(table)
 
 	v.checkTableNames(table, loc)
+
+	// If table name is missing, skip checks that depend on it.
+	if table.Name == "" {
+		return
+	}
+
 	v.checkSchemaRef(table, loc)
 	v.checkTableDuplicates(table, loc)
 	v.checkTableRenameTargets(table, loc)
 
 	// Check 11: dots/whitespace in table name
-	if table.Name != "" && HasDotOrSpace(table.Name) {
+	if HasDotOrSpace(table.Name) {
 		v.warnf(loc, "table %q: name contains a dot or whitespace", table.Name)
 	}
 
