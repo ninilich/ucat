@@ -646,17 +646,33 @@ func (v *validation) checkTable(table Table) {
 	loc := tableLoc(table)
 
 	v.checkTableNames(table, loc)
-	v.checkSchemaRef(table, loc)
-	v.checkTableDuplicates(table, loc)
-	v.checkTableRenameTargets(table, loc)
 
-	// Check 11: dots/whitespace in table name
-	if table.Name != "" && HasDotOrSpace(table.Name) {
-		v.warnf(loc, "table %q: name contains a dot or whitespace", table.Name)
+	// A missing name cascades into some checks that only make sense for a real
+	// table. Skip exactly those; independent checks (column type, clustering,
+	// layout, ...) must still run so the user sees all problems in one pass.
+	// - schema ref: skip only the empty-schema cascade; a nameless table with a
+	//   real but unknown schema is still reported.
+	// - duplicate / rename-target and name dot-space: these need a name.
+	if table.Name == "" {
+		if table.Schema != "" {
+			v.checkSchemaRef(table, loc)
+		}
+	} else {
+		v.checkSchemaRef(table, loc)
+		v.checkTableDuplicates(table, loc)
+		v.checkTableRenameTargets(table, loc)
+
+		// Check 11: dots/whitespace in table name
+		if HasDotOrSpace(table.Name) {
+			v.warnf(loc, "table %q: name contains a dot or whitespace", table.Name)
+		}
 	}
 
-	// Columns are required: an empty list would drop every column of an existing table
-	if !table.Drop && len(table.Columns) == 0 {
+	// Columns are required: an empty list would drop every column of an existing
+	// table. For a nameless table with an empty schema this is a cascade of Check 5
+	// (an empty file has neither), so it is suppressed only in that case; a
+	// nameless table that still names a real schema must report this error.
+	if !table.Drop && len(table.Columns) == 0 && (table.Name != "" || table.Schema != "") {
 		v.errorf(loc, "table %q: columns is required", table.Name)
 	}
 

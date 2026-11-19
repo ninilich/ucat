@@ -111,6 +111,55 @@ func TestValidateLocal_tableNameRequired(t *testing.T) {
 	assert.True(t, diags.HasError())
 }
 
+// An empty table file (no name, no schema, no columns) only yields Check 5;
+// the schema-ref and columns checks would cascade off that missing name.
+// This test fails without the fix: the old code emitted 3 diagnostics and the
+// early-return code emitted 1 only because it skipped every check.
+func TestValidateLocal_emptyNameNoCascade(t *testing.T) {
+	tbl := resolvedTable("")
+	tbl.Name = ""
+	tbl.Schema = ""
+	tbl.Columns = nil
+	diags := config.ValidateLocal(resolvedConfig([]config.Table{tbl}))
+	assert.Len(t, diags, 1)
+	assert.Contains(t, diags[0].Summary, "table name is required")
+}
+
+// A nameless table that also has problems unrelated to its name reports those
+// problems in the same pass: the fix must skip only name-dependent checks, not
+// every check. main reports all five; the branch must not regress to one.
+func TestValidateLocal_emptyNameStillReportsIndependentChecks(t *testing.T) {
+	tbl := resolvedTable("")
+	tbl.Name = ""
+	// A real (but undefined) schema ref must still be reported.
+	tbl.Schema = litNope
+	// Independent column/layout problems must still be reported.
+	tbl.Columns = []config.Column{
+		{Name: "a", Type: "BADTYPE"},
+		{Name: "a", Type: typINT}, // duplicate column
+	}
+	tbl.Clustering = &config.Clustering{Columns: []string{litNope}} // undefined clustering column
+	diags := config.ValidateLocal(resolvedConfig([]config.Table{tbl}))
+	assert.True(t, hasErrorContaining(diags, "table name is required"))
+	assert.True(t, hasErrorContaining(diags, `unknown schema ref "nope"`))
+	assert.True(t, hasErrorContaining(diags, "is not supported"))
+	assert.True(t, hasErrorContaining(diags, "duplicate column"))
+	assert.True(t, hasErrorContaining(diags, `clustering column "nope" is not defined`))
+}
+
+// A nameless table that still names a real schema is not the empty-file
+// cascade: "columns is required" does not depend on the name, so it must be
+// reported alongside "table name is required" (main reports both).
+func TestValidateLocal_emptyNameWithSchemaStillRequiresColumns(t *testing.T) {
+	tbl := resolvedTable("")
+	tbl.Name = ""
+	tbl.Schema = litSilver2 // a real, defined schema
+	tbl.Columns = nil
+	diags := config.ValidateLocal(resolvedConfig([]config.Table{tbl}))
+	assert.True(t, hasErrorContaining(diags, "table name is required"))
+	assert.True(t, hasErrorContaining(diags, "columns is required"))
+}
+
 func TestValidateLocal_columnNameRequired(t *testing.T) {
 	tbl := resolvedTable("orders")
 	tbl.Columns = []config.Column{{Name: "", Type: typSTRING}}
