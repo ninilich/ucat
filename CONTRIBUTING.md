@@ -64,6 +64,23 @@ When you add a test:
 
 Commit messages: a short prefix and a sentence, for example `fix: ...`, `feat: ...`, `docs: ...`, `test: ...`.
 
+## AI-assisted contributions
+
+Using an AI assistant or an agent is fine. The rules are the same as for any contribution, and they matter more here:
+
+- **You are responsible for the change.** Read every line, understand it, and be ready to answer review questions
+  yourself. A pull request that only forwards the output of a tool may be closed without a detailed review.
+- **Say that a tool helped.** Name the assistant or agent in the pull request description. This is not a penalty: it
+  tells the reviewer what to look at.
+- **Run the checks yourself** (the list above) and check that your test fails when the code is broken. Do not write
+  "tests pass" without running them.
+- **License.** Contribute only what you may license under the Apache License 2.0. Do not paste code from projects with an
+  incompatible license, and do not let a tool do it for you.
+- **Take an issue before you start.** Comment on the issue that you are taking it and wait until a maintainer assigns
+  it. This keeps several people (or tools) from doing the same work.
+- **Maintainers decide.** We may close a pull request without a detailed review if these rules are not followed.
+  Workflows on pull requests from first-time contributors run only after a maintainer has read the diff.
+
 ## Where help is welcome
 
 Look for issues labelled `good first issue` and `help wanted`. Ideas for later versions are in [ROADMAP.md](ROADMAP.md).
