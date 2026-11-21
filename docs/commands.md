@@ -71,9 +71,10 @@ The summary line counts `add` (create table), `destroy` (drop table, drop column
 ### Selectors
 
 `--schema` and `--table` take the logical names of the YAML, without regard to case, and combine as a union. A name that
-matches nothing fails before Unity Catalog is read and lists what is available. Only the selected tables are read from
-Unity Catalog. A table with `drop: true` is selected like any other. A rename is selected by the new name. A live table
-that is not in the YAML is never touched.
+matches nothing fails before Unity Catalog is read and lists what is available. Only the selected tables are compared
+and changed, but ucat reads from Unity Catalog every managed table of each schema that has a selected table (one list
+call per schema); schemas without a selected table are not read. A table with `drop: true` is selected like any other.
+A rename is selected by the new name. A live table that is not in the YAML is never touched.
 
 ## apply
 

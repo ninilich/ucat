@@ -34,7 +34,6 @@ The scope of v2 may change. Not in order of priority.
 ## Ideas
 
 - Primary and foreign keys, column masks and row filters
-- A saved plan and a lock between runs
 
 ## Not planned
 
