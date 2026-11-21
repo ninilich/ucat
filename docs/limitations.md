@@ -39,8 +39,9 @@ ucat manages **managed tables** of Unity Catalog:
 12. **Column types are checked by shape, not fully parsed.** A type that passes `validate` but is invalid in Databricks
     fails when `apply` runs it. See [Table YAML](table-yaml.md#column-types).
 13. **Permissions are not checked up front.**
-14. **No saved plan and no lock.** `apply` computes a new plan when it runs, and two runs against one target are not
-    serialized. Use one pipeline per target and the concurrency control of your CI. See
+14. **No saved plan and no lock, by design.** ucat keeps no state between runs: `apply` reads the live state and
+    computes a new plan when it runs, and two runs against one target are not serialized. Use one pipeline per target
+    and the concurrency control of your CI. See [CI/CD](ci-cd.md#plan-and-apply-are-separate-runs) and
     [CI/CD](ci-cd.md#concurrent-runs).
 15. **No history table and no data migrations.** ucat keeps no record of what was applied where: git and the output of
     `plan` are the audit trail. It changes the structure of tables, not their data; a backfill is a job of your own.

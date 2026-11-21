@@ -86,12 +86,33 @@ Unity Catalog, so treat its credentials with care:
 
 ## Plan and apply are separate runs
 
-There is no saved plan. `ucat apply` reads the live state again and computes a new plan at that moment, then applies it.
-What you reviewed on the pull request is the plan of that day; what `apply` runs is the plan of the merge. They differ
-if the live state or the files changed in between: a table was edited by hand, or another pull request was merged first.
+There is no saved plan, by design: ucat keeps no state between runs. `ucat apply` reads the live state again and
+computes a new plan at that moment, then applies it. What you reviewed on the pull request is the plan of that day;
+what `apply` runs is the plan of the merge. They differ if the live state or the files changed in between: a table
+was edited by hand, or another pull request was merged first.
 
-To stop an unexpected change, run `ucat plan -t prod --detailed-exitcode` right before `apply` and compare its output
-with what was approved (exit code `2` means there are changes).
+To stop an unexpected change, keep the approved plan as JSON and compare it with a fresh plan right before `apply`.
+Compare only `op`, `path`, `column` and `previous_name`: `sql` and `description` are for people. For example:
+
+```bash
+# on the pull request: keep the approved plan (a build artifact)
+ucat plan -t prod --json | jq -S '[.changes[] | {op, path, column, previous_name}]' > approved.json
+
+# in the apply job, before `ucat apply`: a difference means the live state or the files changed since the review
+ucat plan -t prod --json | jq -S '[.changes[] | {op, path, column, previous_name}]' > now.json
+diff approved.json now.json
+```
+
+## Checking for drift on a schedule
+
+Run `plan` on a schedule (for example once a night) and fail when the live state differs from the files, for example
+after a manual edit in Unity Catalog:
+
+```bash
+ucat plan -t prod --json | jq -e '.changes | length == 0'
+```
+
+`jq -e` exits with 1 when there are changes. The `plan` principal can be the read-only one from the section above.
 
 ## Concurrent runs
 
