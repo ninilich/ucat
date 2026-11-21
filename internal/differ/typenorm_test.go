@@ -278,30 +278,41 @@ func TestDiff_decimalMalformedLeftAsIs(t *testing.T) {
 // The scan must be linear: a long run of unclosed "decimal(" must not take quadratic time. The test
 // does not compare against a wall-clock limit (that depends on the machine): it times the same input
 // at size n and 16n and compares the ratio. Linear growth gives about 16, quadratic about 256; the
-// limit 100 leaves room for a loaded machine (noise stays within a few times), and the minimum of
-// several runs removes outliers.
+// limit 100 leaves room for a loaded machine (noise stays within a few times).
+//
+// The system clock can be coarse (on Windows its step is up to about 16ms), so a single run of the
+// small input may read as zero. Each input is therefore repeated until the total elapsed time is
+// well above the clock step (minBatch), and the time of one run is the batch time divided by the
+// number of runs; the clock error is then a fraction of the batch. The fastest of a few batches
+// removes outliers. A batch is at least one run, so the large input costs at most a few runs.
 func TestDiff_decimalNormalizationLinear(t *testing.T) {
 	const (
-		units = 4000
-		runs  = 3
-		limit = 100.0
+		units    = 4000
+		batches  = 3
+		minBatch = 50 * time.Millisecond
+		limit    = 100.0
 	)
-	best := func(long string) time.Duration {
+	perRun := func(long string) time.Duration {
 		fastest := time.Duration(1<<63 - 1)
-		for range runs {
+		for range batches {
+			runs := 0
 			start := time.Now()
-			assert.Empty(t, typeDiff(long, long))
-			if d := time.Since(start); d < fastest {
+			var elapsed time.Duration
+			for elapsed < minBatch {
+				assert.Empty(t, typeDiff(long, long))
+				runs++
+				elapsed = time.Since(start)
+			}
+			if d := elapsed / time.Duration(runs); d < fastest {
 				fastest = d
 			}
 		}
 		return fastest
 	}
 	for _, unit := range []string{"decimal(", "decimal(1,"} {
-		small := best(strings.Repeat(unit, units))
-		large := best(strings.Repeat(unit, 16*units))
-		// A clock that does not resolve the small run cannot show growth: count it as 1ns.
+		small := perRun(strings.Repeat(unit, units))
+		large := perRun(strings.Repeat(unit, 16*units))
 		ratio := float64(large) / float64(max(small, time.Nanosecond))
-		assert.Less(t, ratio, limit, "unit %q: 16x input took %v vs %v (%.1fx); linear is ~16x", unit, large, small, ratio)
+		assert.Less(t, ratio, limit, "unit %q: 16x input took %v per run vs %v (%.1fx); linear is ~16x", unit, large, small, ratio)
 	}
 }
